@@ -19,8 +19,13 @@ namespace CombatSystem
         PurelyRandom,
     }
 
-    public enum EnemyBuffType
+    public enum BuffType
     {
-
+        Null,
+        StartWithOneCharge,
+        DamageIncreaseByCharge,
+        Shield,
+        TakeDamageOnCharge,
+        GainChargeFromDefense,
     }
 }

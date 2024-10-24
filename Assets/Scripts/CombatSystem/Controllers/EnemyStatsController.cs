@@ -8,7 +8,6 @@ namespace CombatSystem
     {
         private int _ind;
         [SerializeField] private EnemyPersonalityType _personalityType;
-        private EnemyBuffType _buffType;
 
         private UIManager uiManager;
 
@@ -36,7 +35,7 @@ namespace CombatSystem
             switch (_personalityType)
             {
                 case EnemyPersonalityType.PurelyRandom:
-                    return ChooseActionPurelyRandom();
+                    return ChooseActionPurelyRandom(combatContext);
                 case EnemyPersonalityType.MindlessCAD:
                     return ChooseActionMindlessCAD();
                 case EnemyPersonalityType.MindlessCDA:
@@ -44,7 +43,7 @@ namespace CombatSystem
                 case EnemyPersonalityType.Revenge:
                     return ChooseActionMindlessRevenge(combatContext);
                 default:
-                    return ChooseActionDefault(playerActionName);
+                    return ChooseActionDefault(playerActionName, combatContext);
             }
         }
 
@@ -80,55 +79,94 @@ namespace CombatSystem
             }
         }
 
+        private bool DetermineCanDefend(CombatContext combatContext)
+        {
+            if (_buffType == BuffType.GainChargeFromDefense)
+            {
+                if (combatContext.EnemyActions.Count > 0 && combatContext.EnemyActions[combatContext.EnemyActions.Count - 1] == ActionName.Defense)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private ActionName ChooseActionMindlessRevenge(CombatContext combatContext)
         {
             float p = Random.Range(0, 1f);
+            bool canDefend = DetermineCanDefend(combatContext);
             if (_currentCharge == 0)
             {
-                if (p > 0.1f) return ActionName.Charge;
+                if (p > 0.1f || !canDefend) return ActionName.Charge;
                 else return ActionName.Defense;
             }
             else
             {
                 if (combatContext.PlayerActions.Count > 0 && combatContext.PlayerActions[combatContext.PlayerActions.Count - 1] == ActionName.Attack)
                 {
-                    if (p > 0.1f) return ActionName.Attack;
+                    if (p > 0.1f || !canDefend) return ActionName.Attack;
                     else return ActionName.Defense;
                 }
                 else
                 {
-                    if (p > 0.3f) return ActionName.Defense;
-                    else if (p < 0.1f) return ActionName.Charge;
+                    if (canDefend)
+                    {
+                        if (p > 0.5f) return ActionName.Defense;
+                        else if (p < 0.1f) return ActionName.Charge;
+                        else return ActionName.Attack;
+                    }
+                    else
+                    {
+                        if (p < 0.7f) return ActionName.Charge;
+                        else return ActionName.Attack;
+                    }
+                }
+            }
+        }
+
+        private ActionName ChooseActionPurelyRandom(CombatContext combatContext)
+        {
+            float p = Random.Range(0, 1f);
+            bool canDefend = DetermineCanDefend(combatContext);
+            if (_currentCharge == 0)
+            {
+                if (p > 0.5f || !canDefend) return ActionName.Charge;
+                else return ActionName.Defense;
+            }
+            else
+            {
+                if (canDefend)
+                {
+                    if (p > 0.6f) return ActionName.Defense;
+                    else if (p < 0.3f) return ActionName.Charge;
+                    else return ActionName.Attack;
+                }
+                else
+                {
+                    if (p < 0.5f) return ActionName.Charge;
                     else return ActionName.Attack;
                 }
             }
         }
 
-        private ActionName ChooseActionPurelyRandom()
+        private ActionName ChooseActionDefault(ActionName playerActionName, CombatContext combatContext)
         {
             float p = Random.Range(0, 1f);
-            if (_currentCharge == 0)
-            {
-                if (p > 0.5f) return ActionName.Charge;
-                else return ActionName.Defense;
-            }
-            else
-            {
-                if (p < 0.3f) return ActionName.Attack;
-                else if (p > 0.6f) return ActionName.Defense;
-                else return ActionName.Charge;
-            }
-        }
-
-        private ActionName ChooseActionDefault(ActionName playerActionName)
-        {
-            float p = Random.Range(0, 1f);
+            bool canDefend = DetermineCanDefend(combatContext);
             switch (playerActionName)
             {
                 case ActionName.Attack:
-                    if (_currentCharge > 0 && p > 0.5f) return ActionName.Attack;
-                    else if (p <= 0.5f) return ActionName.Defense;
-                    else return ActionName.Charge;
+                    if (canDefend)
+                    {
+                        if (_currentCharge > 0 && p > 0.5f) return ActionName.Attack;
+                        else if (p <= 0.5f) return ActionName.Defense;
+                        else return ActionName.Charge;
+                    }
+                    else
+                    {
+                        if (_currentCharge > 0 && p > 0.5f) return ActionName.Attack;
+                        else return ActionName.Charge;
+                    }
                 case ActionName.Defense:
                     if (_currentCharge > 0 && p > 0.5f) return ActionName.Attack;
                     else return ActionName.Charge;

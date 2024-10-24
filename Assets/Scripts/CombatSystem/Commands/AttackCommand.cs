@@ -19,7 +19,8 @@ namespace CombatSystem
 
         public IEnumerator Co_Execute()
         {
-            _target.TakeDamage(_attacker.AttackPower);
+            int attackPower = _attacker.GetAttackPower();
+            _target.TakeDamage(attackPower);
             _attacker.LoseCharge();
             yield return new WaitForSeconds(_waitTime);
         }

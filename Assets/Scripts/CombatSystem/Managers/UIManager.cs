@@ -20,6 +20,7 @@ namespace CombatSystem
         [Header("HUD")]
         [SerializeField] private UICharacterHUD playerHUD;
         [SerializeField] private UICharacterHUD enemyHUD;
+        [SerializeField] private UIPlayerBuffRevealer playerBuffRevealer;
 
         [Header("Win Lose UI")]
         [SerializeField] private GameObject winUI;
@@ -33,6 +34,8 @@ namespace CombatSystem
 
         private CombatManager combatManager;
         private CommandManager commandManager;
+
+        public UnityEvent Evt_OnBattleStart = new UnityEvent();
 
         private void Start()
         {
@@ -50,14 +53,25 @@ namespace CombatSystem
             loseButton.onClick.AddListener(ShowBattleStartUI);
             loseButton.onClick.AddListener(combatManager.SetUpBattle);
 
-            battleStartButton.onClick.AddListener(HideBattleStartUI);
-            battleStartButton.onClick.AddListener(ShowButtons);
-            battleStartButton.onClick.AddListener(() => { ShowDialogueMessage("Choose action"); });
+            battleStartButton.onClick.AddListener(OnBattleStart);
 
             HideButtons();
             HideWinUI();
             HideLoseUI();
             ShowBattleStartUI();
+        }
+
+        private void OnBattleStart()
+        {
+            HideBattleStartUI();
+            Evt_OnBattleStart.Invoke();
+            Invoke("DelayedOnBattleStart", 2f);
+        }
+
+        public void DelayedOnBattleStart()
+        {
+            ShowButtons();
+            ShowDialogueMessage("Choose action");
         }
 
         public void QueueInDialogueTextCommand(string s, float waitTime)
@@ -81,6 +95,11 @@ namespace CombatSystem
         {
             if (currentCharge > 0) attackButton.enabled = true;
             else attackButton.enabled = false;
+        }
+
+        public void UpdateDefenseButtonStatus(bool enabled)
+        {
+            defenseButton.enabled = enabled;
         }
 
         public void UpdatePlayerHealthBar(int currentVal, int maxVal)
@@ -193,6 +212,11 @@ namespace CombatSystem
         private void HideBattleStartUI()
         {
             battleStartUI.SetActive(false);
+        }
+
+        public void SetUpPlayerBuffText(string s)
+        {
+            playerBuffRevealer.SetHoverText(s);
         }
     }
 }
