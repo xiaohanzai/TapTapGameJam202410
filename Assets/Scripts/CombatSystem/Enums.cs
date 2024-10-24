@@ -10,4 +10,17 @@ namespace CombatSystem
         Defense,
         Charge,
     }
+
+    public enum EnemyPersonalityType
+    {
+        MindlessCAD,
+        MindlessCDA,
+        Revenge,
+        PurelyRandom,
+    }
+
+    public enum EnemyBuffType
+    {
+
+    }
 }

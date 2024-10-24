@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08a48232a3ccb4133a960c0abc9812cc, type: 3}
-  m_Name: PlayerParamsData
+  m_Name: EnemyParamsData 1
   m_EditorClassIdentifier: 
-  _maxHealth: 10
-  _maxCharge: 10
-  _attackPower: 3
+  _maxHealth: 8
+  _maxCharge: 8
+  _attackPower: 2

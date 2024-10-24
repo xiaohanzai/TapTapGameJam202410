@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace CombatSystem
 {
     public class UIManager : MonoBehaviour
     {
+        [Header("Dialogue")]
         [SerializeField] private GameObject buttonsParent;
         [SerializeField] private Button attackButton;
         [SerializeField] private Button chargeButton;
@@ -15,53 +17,55 @@ namespace CombatSystem
 
         [SerializeField] private TextMeshProUGUI dialogueText;
 
+        [Header("HUD")]
         [SerializeField] private UICharacterHUD playerHUD;
         [SerializeField] private UICharacterHUD enemyHUD;
 
-        [SerializeField] private CombatManager combatManager;
+        [Header("Win Lose UI")]
+        [SerializeField] private GameObject winUI;
+        [SerializeField] private Button winButton;
+        [SerializeField] private GameObject loseUI;
+        [SerializeField] private Button loseButton;
 
-        [SerializeField] private PlayerStatsController playerStatsController;
-        [SerializeField] private EnemyStatsController enemyStatsController;
+        [Header("Battle Start UI")]
+        [SerializeField] private GameObject battleStartUI;
+        [SerializeField] private Button battleStartButton;
 
-        void Awake()
+        private CombatManager combatManager;
+        private CommandManager commandManager;
+
+        private void Start()
         {
+            commandManager = ServiceLocator.Get<CommandManager>();
+            combatManager = ServiceLocator.Get<CombatManager>();
+
             attackButton.onClick.AddListener(OnPlayerChooseAttack);
             chargeButton.onClick.AddListener(OnPlayerChooseCharge);
             defenseButton.onClick.AddListener(OnPlayerChooseDefense);
 
-            playerStatsController.Evt_OnChargeChanged.AddListener(UpdateAttackButtonStatus);
+            winButton.onClick.AddListener(HideWinUI);
+            winButton.onClick.AddListener(ShowBattleStartUI);
+            winButton.onClick.AddListener(combatManager.SetUpBattle);
+            loseButton.onClick.AddListener(HideLoseUI);
+            loseButton.onClick.AddListener(ShowBattleStartUI);
+            loseButton.onClick.AddListener(combatManager.SetUpBattle);
 
-            playerStatsController.Evt_OnHealthChanged.AddListener(UpdatePlayerHealthBar);
-            playerStatsController.Evt_OnChargeChanged.AddListener(UpdatePlayerChargeBar);
-            enemyStatsController.Evt_OnHealthChanged.AddListener(UpdateEnemyHealthBar);
-            enemyStatsController.Evt_OnChargeChanged.AddListener(UpdateEnemyChargeBar);
+            battleStartButton.onClick.AddListener(HideBattleStartUI);
+            battleStartButton.onClick.AddListener(ShowButtons);
+            battleStartButton.onClick.AddListener(() => { ShowDialogueMessage("Choose action"); });
+
+            HideButtons();
+            HideWinUI();
+            HideLoseUI();
+            ShowBattleStartUI();
         }
 
-        private void OnDestroy()
-        {
-            attackButton.onClick.RemoveListener(OnPlayerChooseAttack);
-            chargeButton.onClick.RemoveListener(OnPlayerChooseCharge);
-            defenseButton.onClick.RemoveListener(OnPlayerChooseDefense);
-
-            playerStatsController.Evt_OnChargeChanged.RemoveListener(UpdateAttackButtonStatus);
-
-            playerStatsController.Evt_OnHealthChanged.RemoveListener(UpdatePlayerHealthBar);
-            playerStatsController.Evt_OnChargeChanged.RemoveListener(UpdatePlayerChargeBar);
-            enemyStatsController.Evt_OnHealthChanged.RemoveListener(UpdateEnemyHealthBar);
-            enemyStatsController.Evt_OnChargeChanged.RemoveListener(UpdateEnemyChargeBar);
-        }
-
-        void Update()
-        {
-
-        }
-
-        public void QueueInDialogueTextCommand(string s, float waitTime, CommandManager commandManager)
+        public void QueueInDialogueTextCommand(string s, float waitTime)
         {
             commandManager.AddCommand(new UIDialogueCommand(s, this, waitTime));
         }
 
-        public void QueueInBtnsVisibilityCommand(float waitTime, bool show, CommandManager commandManager)
+        public void QueueInBtnsVisibilityCommand(float waitTime, bool show)
         {
             if (show)
             {
@@ -73,28 +77,28 @@ namespace CombatSystem
             }
         }
 
-        private void UpdateAttackButtonStatus(int currentCharge, int maxCharge)
+        public void UpdateAttackButtonStatus(int currentCharge, int maxCharge)
         {
             if (currentCharge > 0) attackButton.enabled = true;
             else attackButton.enabled = false;
         }
 
-        private void UpdatePlayerHealthBar(int currentVal, int maxVal)
+        public void UpdatePlayerHealthBar(int currentVal, int maxVal)
         {
             playerHUD.SetHealthBar((float)currentVal / maxVal);
         }
 
-        private void UpdateEnemyHealthBar(int currentVal, int maxVal)
+        public void UpdateEnemyHealthBar(int currentVal, int maxVal)
         {
             enemyHUD.SetHealthBar((float)currentVal / maxVal);
         }
 
-        private void UpdatePlayerChargeBar(int currentVal, int maxVal)
+        public void UpdatePlayerChargeBar(int currentVal, int maxVal)
         {
             playerHUD.SetChargeBar((float)currentVal / maxVal);
         }
 
-        private void UpdateEnemyChargeBar(int currentVal, int maxVal)
+        public void UpdateEnemyChargeBar(int currentVal, int maxVal)
         {
             enemyHUD.SetChargeBar((float)currentVal / maxVal);
         }
@@ -147,6 +151,48 @@ namespace CombatSystem
         public void ShowDialogueMessage(string s)
         {
             dialogueText.text = s;
+        }
+
+        public void ShowWinUI()
+        {
+            Invoke("DelayedShowWinUI", 0.2f);
+        }
+
+        private void DelayedShowWinUI()
+        {
+            winUI.SetActive(true);
+            HideButtons();
+        }
+
+        private void HideWinUI()
+        {
+            winUI.SetActive(false);
+        }
+
+        public void ShowLoseUI()
+        {
+            Invoke("DelayedShowLoseUI", 0.2f);
+        }
+
+        private void DelayedShowLoseUI()
+        {
+            loseUI.SetActive(true);
+            HideButtons();
+        }
+
+        private void HideLoseUI()
+        {
+            loseUI.SetActive(false);
+        }
+
+        private void ShowBattleStartUI()
+        {
+            battleStartUI.SetActive(true);
+        }
+
+        private void HideBattleStartUI()
+        {
+            battleStartUI.SetActive(false);
         }
     }
 }

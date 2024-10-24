@@ -13,6 +13,7 @@ namespace CombatSystem
 
         public UnityEvent<int, int> Evt_OnChargeChanged = new UnityEvent<int, int>();
         public UnityEvent<int, int> Evt_OnHealthChanged = new UnityEvent<int, int>();
+        public UnityEvent Evt_OnCharacterDied = new UnityEvent();
 
         protected int _currentHealth;
         protected int _maxHealth;
@@ -32,7 +33,14 @@ namespace CombatSystem
 
         protected bool _isDefending;
 
+        protected CommandManager commandManager;
+
         protected virtual void Start()
+        {
+            commandManager = ServiceLocator.Get<CommandManager>();
+        }
+
+        public virtual void SetUp()
         {
             _maxHealth = _characterParamsData.MaxHealth;
             _currentHealth = _maxHealth;
@@ -47,9 +55,16 @@ namespace CombatSystem
             _attackAnimationDuration = AnimationHelper.GetAnimationLength(_animator, "Attack");
             _chargeAnimationDuration = AnimationHelper.GetAnimationLength(_animator, "Charge");
             _defenseAnimationDuration = AnimationHelper.GetAnimationLength(_animator, "Defense");
+
+            _isDefending = false;
         }
 
-        public void QueueInActionCommand(ActionName actionName, float waitTime, CharacterStatsController otherController, CommandManager commandManager)
+        public bool IsDead()
+        {
+            return _currentHealth <= 0;
+        }
+
+        public void QueueInActionCommand(ActionName actionName, float waitTime, CharacterStatsController otherController)
         {
             switch (actionName)
             {
@@ -67,7 +82,7 @@ namespace CombatSystem
             }
         }
 
-        public void QueueInAnimationCommand(ActionName actionName, float waitTime, CommandManager commandManager)
+        public void QueueInAnimationCommand(ActionName actionName, float waitTime)
         {
             switch (actionName)
             {
@@ -85,7 +100,7 @@ namespace CombatSystem
             }
         }
 
-        public void QueueInResetStatsCommand(CommandManager commandManager)
+        public void QueueInResetStatsCommand()
         {
             commandManager.AddCommand(new StatsResetCommand(this));
         }
@@ -93,11 +108,8 @@ namespace CombatSystem
         public void TakeDamage(int damage)
         {
             if (!_isDefending) _currentHealth -= damage;
-            if (_currentHealth <= 0)
-            {
-                _currentHealth = 0;
-            }
-            Evt_OnHealthChanged.Invoke(_currentHealth, _maxHealth);
+            Evt_OnHealthChanged.Invoke(Mathf.Max(_currentHealth, 0), _maxHealth);
+            if (_currentHealth <= 0) Evt_OnCharacterDied.Invoke();
         }
 
         public void Defend()
