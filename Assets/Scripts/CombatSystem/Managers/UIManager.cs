@@ -20,11 +20,11 @@ namespace CombatSystem
         [Header("HUD")]
         [SerializeField] private UICharacterHUD playerHUD;
         [SerializeField] private UICharacterHUD enemyHUD;
-        [SerializeField] private UIPlayerBuffRevealer playerBuffRevealer;
+        [SerializeField] private UIHoverRevealer playerBuffRevealer;
 
         [Header("Win Lose UI")]
-        [SerializeField] private GameObject winUI;
-        [SerializeField] private Button winButton;
+        [SerializeField] private UIWinPanel winPanel;
+        public UIWinPanel WinPanel => winPanel;
         [SerializeField] private GameObject loseUI;
         [SerializeField] private Button loseButton;
 
@@ -46,14 +46,11 @@ namespace CombatSystem
             chargeButton.onClick.AddListener(OnPlayerChooseCharge);
             defenseButton.onClick.AddListener(OnPlayerChooseDefense);
 
-            winButton.onClick.AddListener(HideWinUI);
-            winButton.onClick.AddListener(ShowBattleStartUI);
-            winButton.onClick.AddListener(combatManager.SetUpBattle);
-            loseButton.onClick.AddListener(HideLoseUI);
-            loseButton.onClick.AddListener(ShowBattleStartUI);
-            loseButton.onClick.AddListener(combatManager.SetUpBattle);
+            loseButton.onClick.AddListener(OnLosePanelBtnClicked);
 
             battleStartButton.onClick.AddListener(OnBattleStart);
+
+            winPanel.Evt_BtnOnClickUniversal.AddListener(OnWinPanelBtnClicked);
 
             HideButtons();
             HideWinUI();
@@ -179,13 +176,27 @@ namespace CombatSystem
 
         private void DelayedShowWinUI()
         {
-            winUI.SetActive(true);
+            winPanel.gameObject.SetActive(true);
             HideButtons();
         }
 
         private void HideWinUI()
         {
-            winUI.SetActive(false);
+            winPanel.gameObject.SetActive(false);
+        }
+
+        private void OnWinPanelBtnClicked()
+        {
+            ShowBattleStartUI();
+            combatManager.SetUpBattle();
+            HideWinUI();
+        }
+
+        private void OnLosePanelBtnClicked()
+        {
+            ShowBattleStartUI();
+            combatManager.SetUpBattle();
+            HideLoseUI();
         }
 
         public void ShowLoseUI()

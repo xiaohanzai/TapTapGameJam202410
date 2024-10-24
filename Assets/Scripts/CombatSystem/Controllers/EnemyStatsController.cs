@@ -28,6 +28,7 @@ namespace CombatSystem
         {
             base.SetUp();
             _ind = -1;
+            _lightAmount = _characterParamsData.LightAmount;
         }
 
         public ActionName ChooseAction(ActionName playerActionName, CombatContext combatContext)

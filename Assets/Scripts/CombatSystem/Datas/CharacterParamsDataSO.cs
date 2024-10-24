@@ -15,5 +15,8 @@ namespace CombatSystem
 
         [SerializeField] private int _attackPower;
         public int AttackPower => _attackPower;
+
+        [SerializeField] private int _lightAmount;
+        public int LightAmount => _lightAmount;
     }
 }

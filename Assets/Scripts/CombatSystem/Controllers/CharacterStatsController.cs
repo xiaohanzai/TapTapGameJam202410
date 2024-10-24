@@ -26,6 +26,8 @@ namespace CombatSystem
         protected int _attackPower;
         protected int _thisRoundAttackPower;
 
+        [SerializeField] protected int _lightAmount;
+
         private int _shield;
 
         protected float _attackAnimationDuration;
@@ -59,6 +61,8 @@ namespace CombatSystem
             _thisRoundChargeLoss = 0;
 
             _attackPower = _characterParamsData.AttackPower;
+
+            //_lightAmount = _characterParamsData.LightAmount;
 
             _shield = 0;
 
@@ -219,6 +223,31 @@ namespace CombatSystem
             Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
             Evt_OnHealthChanged.Invoke(Mathf.Max(_currentHealth, 0), _maxHealth);
             if (_currentHealth <= 0) Evt_OnCharacterDied.Invoke();
+        }
+
+        public void AddLight(int amount)
+        {
+            _lightAmount += amount;
+        }
+
+        public void LoseLight(int amount)
+        {
+            _lightAmount -= amount;
+        }
+
+        public int GetLightAmount()
+        {
+            return _lightAmount;
+        }
+
+        public void SetBuffType(BuffType buffType)
+        {
+            _buffType = buffType;
+        }
+
+        public BuffType GetBuffType()
+        {
+            return _buffType;
         }
     }
 }

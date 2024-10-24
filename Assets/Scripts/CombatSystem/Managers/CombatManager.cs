@@ -98,6 +98,7 @@ namespace CombatSystem
                 enemyStatsController.SetUp();
                 playerStatsController.SetUp();
             }
+            uiManager.WinPanel.SetUpWinPanel(enemyStatsController.GetLightAmount(), enemyStatsController.GetBuffType(), playerStatsController.RevealBuff(false), enemyStatsController.RevealBuff(false));
         }
 
         public void RevealBuffs()

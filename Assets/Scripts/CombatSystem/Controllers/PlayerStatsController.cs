@@ -10,6 +10,7 @@ namespace CombatSystem
 
         private int _indBuff;
         private BuffType[] _availableBuffs = new BuffType[5] { BuffType.DamageIncreaseByCharge, BuffType.TakeDamageOnCharge, BuffType.Shield, BuffType.StartWithOneCharge, BuffType.GainChargeFromDefense };
+
         protected override void Start()
         {
             base.Start();
@@ -21,14 +22,19 @@ namespace CombatSystem
             Evt_OnChargeChanged.AddListener(uiManager.UpdatePlayerChargeBar);
             Evt_OnHealthChanged.AddListener(uiManager.UpdatePlayerHealthBar);
             Evt_OnDefended.AddListener(uiManager.UpdateDefenseButtonStatus);
+
+            uiManager.WinPanel.Evt_OnGetLightClicked.AddListener(AddLight);
+            uiManager.WinPanel.Evt_OnGetBuffClicked.AddListener(SetBuffType);
         }
 
         public override void SetUp()
         {
             base.SetUp();
 
-            _buffType = _availableBuffs[_indBuff % 5];
-            _indBuff++;
+            // for debugging
+            //_buffType = _availableBuffs[_indBuff % 5];
+            //_indBuff++;
+            if (_buffType == BuffType.Null) _buffType = _availableBuffs[Random.Range(0, _availableBuffs.Length)];
         }
     }
 }

@@ -15,3 +15,4 @@ MonoBehaviour:
   _maxHealth: 5
   _maxCharge: 5
   _attackPower: 3
+  _lightAmount: 1
