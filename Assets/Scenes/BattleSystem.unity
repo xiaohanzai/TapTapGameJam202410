@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0cc0c1c1fa746a194a44a991e39e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterParamsData: {fileID: 11400000, guid: 44d3b73a16c9a4a1a8fb3bbc6f0a625f,
+  _characterParamsData: {fileID: 11400000, guid: 6d652b6ea3e2d40a89a7d578a5dd5bad,
     type: 2}
   _animator: {fileID: 221397716}
   Evt_OnChargeChanged:
@@ -587,8 +587,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _lightAmount: 0
-  _buffType: 1
-  _personalityType: 3
 --- !u!95 &221397716
 Animator:
   serializedVersion: 5
@@ -938,7 +936,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _lightAmount: 0
-  _buffType: 0
 --- !u!1 &300268173
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,7 +1937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0cc0c1c1fa746a194a44a991e39e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterParamsData: {fileID: 11400000, guid: 1e6b9219237c94610a90490893d4eb99,
+  _characterParamsData: {fileID: 11400000, guid: 0e7c5d3df8e3743539c87f03178005b5,
     type: 2}
   _animator: {fileID: 475684147}
   Evt_OnChargeChanged:
@@ -1956,8 +1953,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _lightAmount: 0
-  _buffType: 2
-  _personalityType: 3
 --- !u!95 &475684147
 Animator:
   serializedVersion: 5
@@ -4349,7 +4344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0cc0c1c1fa746a194a44a991e39e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterParamsData: {fileID: 11400000, guid: 4ae41fcd94cd24fdabcfa3ac29c9bba8,
+  _characterParamsData: {fileID: 11400000, guid: dab548c72713d4f768178b33eb3cf82b,
     type: 2}
   _animator: {fileID: 1004662783}
   Evt_OnChargeChanged:
@@ -4365,8 +4360,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _lightAmount: 0
-  _buffType: 4
-  _personalityType: 1
 --- !u!95 &1004662783
 Animator:
   serializedVersion: 5
@@ -5885,7 +5878,7 @@ GameObject:
   - component: {fileID: 1539098763}
   - component: {fileID: 1539098764}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5940,7 +5933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0cc0c1c1fa746a194a44a991e39e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterParamsData: {fileID: 11400000, guid: 77daf583198b14624948ac55789af30f,
+  _characterParamsData: {fileID: 11400000, guid: 7c0aed70457db4b0cb056d807a02a9e2,
     type: 2}
   _animator: {fileID: 1539098763}
   Evt_OnChargeChanged:
@@ -5956,8 +5949,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _lightAmount: 0
-  _buffType: 5
-  _personalityType: 0
 --- !u!1 &1567748539
 GameObject:
   m_ObjectHideFlags: 0
@@ -8089,7 +8080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0cc0c1c1fa746a194a44a991e39e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterParamsData: {fileID: 11400000, guid: 6839cdc36bfda4ac39254a0f5c4fa493,
+  _characterParamsData: {fileID: 11400000, guid: ef82644628cf946b3997fa71f2ddc891,
     type: 2}
   _animator: {fileID: 2034557454}
   Evt_OnChargeChanged:
@@ -8105,8 +8096,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _lightAmount: 0
-  _buffType: 3
-  _personalityType: 2
 --- !u!95 &2034557454
 Animator:
   serializedVersion: 5

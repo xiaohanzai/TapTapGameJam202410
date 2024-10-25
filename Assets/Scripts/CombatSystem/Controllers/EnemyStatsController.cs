@@ -6,8 +6,9 @@ namespace CombatSystem
 {
     public class EnemyStatsController : CharacterStatsController
     {
+        private EnemyPersonalityType _personalityType;
+
         private int _ind;
-        [SerializeField] private EnemyPersonalityType _personalityType;
 
         private UIManager uiManager;
 
@@ -27,8 +28,19 @@ namespace CombatSystem
         public override void SetUp()
         {
             base.SetUp();
+
             _ind = -1;
-            _lightAmount = _characterParamsData.LightAmount;
+
+            if (_characterParamsData is EnemyParamsDataSO enemyParamsData)
+            {
+                _lightAmount = enemyParamsData.LightAmount;
+                _personalityType = enemyParamsData.PersonalityType;
+                _buffType = enemyParamsData.BuffType;
+            }
+            else
+            {
+                Debug.LogError("Need to input EnemyParamsDataSO for enemies!");
+            }
         }
 
         public ActionName ChooseAction(ActionName playerActionName, CombatContext combatContext)

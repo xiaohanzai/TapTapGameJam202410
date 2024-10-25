@@ -42,7 +42,7 @@ namespace CombatSystem
 
         protected CommandManager commandManager;
 
-        [SerializeField] protected BuffType _buffType;
+        protected BuffType _buffType;
 
         protected virtual void Start()
         {
@@ -61,8 +61,6 @@ namespace CombatSystem
             _thisRoundChargeLoss = 0;
 
             _attackPower = _characterParamsData.AttackPower;
-
-            //_lightAmount = _characterParamsData.LightAmount;
 
             _shield = 0;
 
