@@ -11,12 +11,8 @@ namespace CombatSystem
 
         private int ind;
 
-        private UIManager uiManager;
-
         void Start()
         {
-            uiManager = ServiceLocator.Get<UIManager>();
-
             foreach (var item in enemyStatsControllers)
             {
                 item.Evt_OnCharacterDied.AddListener(OnCurrentEnemyDied);
@@ -36,6 +32,11 @@ namespace CombatSystem
                 else enemyStatsControllers[i].gameObject.SetActive(false);
             }
             return ind < enemyStatsControllers.Length? enemyStatsControllers[ind] : null;
+        }
+
+        public void SetEnemy(int i)
+        {
+            ind = i;
         }
     }
 }

@@ -8,15 +8,18 @@ public class CombatSystemManager : MonoBehaviour
 {
     [SerializeField] private GameObject mainBody;
 
-    [SerializeField] private Button winBtn;
+    [SerializeField] private Button[] winBtns;
     [SerializeField] private Button loseBtn;
+
+    [SerializeField] private CombatSystem.CombatManager combatManager;
 
     public UnityEvent Evt_OnPlayerWon = new UnityEvent();
     public UnityEvent Evt_OnPlayerLost = new UnityEvent();
 
     void Start()
     {
-        winBtn.onClick.AddListener(() => { Evt_OnPlayerWon.Invoke(); });
+        foreach (var btn in winBtns)
+            btn.onClick.AddListener(() => { Evt_OnPlayerWon.Invoke(); });
         loseBtn.onClick.AddListener(() => { Evt_OnPlayerLost.Invoke(); });
     }
 
@@ -33,5 +36,10 @@ public class CombatSystemManager : MonoBehaviour
     public void StartBossFight()
     {
         Debug.Log("start boss fight...");
+    }
+
+    public void StartCombat(int i)
+    {
+        combatManager.StartCombat(i);
     }
 }

@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
         else
         {
             combatSystemManager.Activate();
-            //combatSystemManager.ShowEnemy(round);
+            combatSystemManager.StartCombat(round);
         }
     }
 

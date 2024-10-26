@@ -55,7 +55,7 @@ namespace CombatSystem
             HideButtons();
             HideWinUI();
             HideLoseUI();
-            ShowBattleStartUI();
+            HideBattleStartUI();
         }
 
         private void OnBattleStart()
@@ -215,8 +215,11 @@ namespace CombatSystem
             loseUI.SetActive(false);
         }
 
-        private void ShowBattleStartUI()
+        public void ShowBattleStartUI()
         {
+            HideButtons();
+            HideWinUI();
+            HideLoseUI();
             battleStartUI.SetActive(true);
         }
 

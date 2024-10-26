@@ -108,5 +108,12 @@ namespace CombatSystem
             uiManager.ShowDialogueMessage(s);
             uiManager.SetUpPlayerBuffText(playerStatsController.RevealBuff(false));
         }
+
+        public void StartCombat(int i)
+        {
+            enemyManager.SetEnemy(i);
+            SetUpBattle();
+            uiManager.ShowBattleStartUI();
+        }
     }
 }
