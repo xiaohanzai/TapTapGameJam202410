@@ -62,10 +62,12 @@ public class GameManager : MonoBehaviour
         if (ind == 0)
         {
             fairySystemManager.Activate();
+            fairySystemManager.ShowFairy(round);
         }
         else
         {
             combatSystemManager.Activate();
+            //combatSystemManager.ShowEnemy(round);
         }
     }
 

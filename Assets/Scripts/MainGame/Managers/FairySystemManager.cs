@@ -9,6 +9,8 @@ public class FairySystemManager : MonoBehaviour
     [SerializeField] private GameObject mainBody;
     [SerializeField] private Button proceedBtn;
 
+    [SerializeField] private FairySystem.ConversationManager conversationManager;
+
     public UnityEvent Evt_OnEncounterEnded = new UnityEvent();
 
     void Start()
@@ -29,5 +31,10 @@ public class FairySystemManager : MonoBehaviour
     public void OnProceedBtnPressed()
     {
         Evt_OnEncounterEnded.Invoke();
+    }
+
+    public void ShowFairy(int i)
+    {
+        conversationManager.StartShowingSlides(i);
     }
 }
