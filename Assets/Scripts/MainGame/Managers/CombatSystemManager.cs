@@ -12,6 +12,7 @@ public class CombatSystemManager : MonoBehaviour
     [SerializeField] private Button loseBtn;
 
     [SerializeField] private CombatSystem.CombatManager combatManager;
+    [SerializeField] private PlayerStatsManager playerStatsManager;
 
     public UnityEvent Evt_OnPlayerWon = new UnityEvent();
     public UnityEvent Evt_OnPlayerLost = new UnityEvent();
@@ -41,5 +42,10 @@ public class CombatSystemManager : MonoBehaviour
     public void StartCombat(int i)
     {
         combatManager.StartCombat(i);
+    }
+
+    public void ChangePlayerStats(int deltaHealth, int deltaCharge)
+    {
+        combatManager.ChangePlayerCurrentStats(deltaHealth, deltaCharge);
     }
 }

@@ -37,4 +37,9 @@ public class FairySystemManager : MonoBehaviour
     {
         conversationManager.StartShowingSlides(i);
     }
+
+    public (int, int) GetCurrentFairyHPs()
+    {
+        return conversationManager.GetCurrentFairyHPs();
+    }
 }

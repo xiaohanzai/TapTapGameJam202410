@@ -8,6 +8,10 @@ namespace CombatSystem
     public class CombatManager : MonoBehaviour
     {
         [SerializeField] private PlayerStatsController playerStatsController;
+        private int playerCurrentHealth;
+        private int playerMaxHealth;
+        private int playerCurrentCharge;
+        private int playerMaxCharge;
 
         private EnemyStatsController enemyStatsController;
 
@@ -29,11 +33,34 @@ namespace CombatSystem
 
             commandManager.Evt_OnCommandsFinished.AddListener(OnCommandsFinished);
             uiManager.Evt_OnBattleStart.AddListener(RevealBuffs);
+
+            playerStatsController.Evt_OnChargeChanged.AddListener(OnPlayerChargeStatsChanged);
+            playerStatsController.Evt_OnHealthChanged.AddListener(OnPlayerHealthStatsChanged);
         }
 
         private void Update()
         {
             if (!isInitialized) SetUpBattle();
+        }
+
+        public void SetUpBattle()
+        {
+            isInitialized = true;
+            _combatContext.ClearPlayerActions();
+            _combatContext.ClearEnemyActions();
+            enemyStatsController = enemyManager.GetAndShowCurrentEnemy();
+            uiManager.ShowDialogueMessage("A wild enemy has appeared");
+            uiManager.SetUpPlayerBuffText("");
+            if (enemyStatsController == null)
+            {
+                Debug.Log("all enemies are defeated");
+            }
+            else
+            {
+                enemyStatsController.SetUp();
+                playerStatsController.SetUp(playerCurrentHealth, playerCurrentCharge);
+            }
+            uiManager.WinPanel.SetUpWinPanel(enemyStatsController.GetLightAmount(), enemyStatsController.GetBuffType(), playerStatsController.RevealBuff(false), enemyStatsController.RevealBuff(false));
         }
 
         public void OnPlayerActionChosen(ActionName playerActionName)
@@ -81,26 +108,6 @@ namespace CombatSystem
             }
         }
 
-        public void SetUpBattle()
-        {
-            isInitialized = true;
-            _combatContext.ClearPlayerActions();
-            _combatContext.ClearEnemyActions();
-            enemyStatsController = enemyManager.GetAndShowCurrentEnemy();
-            uiManager.ShowDialogueMessage("A wild enemy has appeared");
-            uiManager.SetUpPlayerBuffText("");
-            if (enemyStatsController == null)
-            {
-                Debug.Log("all enemies are defeated");
-            }
-            else
-            {
-                enemyStatsController.SetUp();
-                playerStatsController.SetUp();
-            }
-            uiManager.WinPanel.SetUpWinPanel(enemyStatsController.GetLightAmount(), enemyStatsController.GetBuffType(), playerStatsController.RevealBuff(false), enemyStatsController.RevealBuff(false));
-        }
-
         public void RevealBuffs()
         {
             string s = "<color=\"red\">Player buff:</color> " + playerStatsController.RevealBuff(true) + "\n";
@@ -114,6 +121,31 @@ namespace CombatSystem
             enemyManager.SetEnemy(i);
             SetUpBattle();
             uiManager.ShowBattleStartUI();
+        }
+
+        private void OnPlayerHealthStatsChanged(int currentHealth, int maxHealth)
+        {
+            playerCurrentHealth = currentHealth;
+            playerMaxHealth = maxHealth;
+        }
+
+        private void OnPlayerChargeStatsChanged(int currentCharge, int maxCharge)
+        {
+            playerCurrentCharge = currentCharge;
+            playerMaxCharge = maxCharge;
+        }
+
+        public (int, int) GetPlayerCurrentStats()
+        {
+            return (playerCurrentHealth, playerCurrentCharge);
+        }
+
+        public void ChangePlayerCurrentStats(int delatHealth, int deltaCharge)
+        {
+            playerCurrentHealth += delatHealth;
+            if (playerCurrentHealth > playerMaxHealth) playerCurrentHealth = playerMaxHealth;
+            playerCurrentCharge += deltaCharge;
+            if (playerCurrentCharge > playerMaxCharge) playerCurrentCharge = playerMaxCharge;
         }
     }
 }

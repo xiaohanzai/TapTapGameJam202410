@@ -31,6 +31,25 @@ namespace CombatSystem
         {
             base.SetUp();
 
+            _currentHealth = _maxHealth;
+            Evt_OnHealthChanged.Invoke(_currentHealth, _maxHealth);
+
+            _currentCharge = 0;
+            Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
+
+            if (_buffType == BuffType.Null) _buffType = _availableBuffs[Random.Range(0, _availableBuffs.Length)];
+        }
+
+        public void SetUp(int health, int charge)
+        {
+            base.SetUp();
+
+            _currentHealth = health > 0? health : _maxHealth;
+            Evt_OnHealthChanged.Invoke(_currentHealth, _maxHealth);
+
+            _currentCharge = charge > 0? charge : 0;
+            Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
+
             // for debugging
             //_buffType = _availableBuffs[_indBuff % 5];
             //_indBuff++;

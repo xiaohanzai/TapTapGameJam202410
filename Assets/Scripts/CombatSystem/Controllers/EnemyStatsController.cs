@@ -29,6 +29,12 @@ namespace CombatSystem
         {
             base.SetUp();
 
+            _currentHealth = _maxHealth;
+            Evt_OnHealthChanged.Invoke(_currentHealth, _maxHealth);
+
+            _currentCharge = 0;
+            Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
+
             _ind = -1;
 
             if (_characterParamsData is EnemyParamsDataSO enemyParamsData)

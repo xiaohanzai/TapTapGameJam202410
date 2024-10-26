@@ -7,6 +7,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI fairyEncounterText;
     [SerializeField] private TextMeshProUGUI countDownTxt;
 
     [SerializeField] private Button shareLightBtn;
@@ -24,6 +25,8 @@ public class UIManager : MonoBehaviour
         shareLightBtn.onClick.AddListener(OnShareLightBtnPressed);
         proceedBtn.onClick.AddListener(OnProceedBtnPressed);
         auroraBtn.onClick.AddListener(OnAuroraBtnPressed);
+
+        fairyEncounterText.text = "";
     }
 
     public void ShowShareLightBtn()
@@ -73,5 +76,16 @@ public class UIManager : MonoBehaviour
     {
         if (t > 0) countDownTxt.text = Mathf.CeilToInt(t) + " sec left to share light";
         else countDownTxt.text = "";
+    }
+
+    public void ShowFairyEncounterText(string s)
+    {
+        fairyEncounterText.text = s;
+        Invoke("DelayedResetFairyEncounterText", 2f);
+    }
+
+    private void DelayedResetFairyEncounterText()
+    {
+        fairyEncounterText.text = "";
     }
 }

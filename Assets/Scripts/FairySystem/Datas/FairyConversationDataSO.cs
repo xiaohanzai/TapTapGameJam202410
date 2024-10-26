@@ -12,6 +12,8 @@ namespace FairySystem
 
         [SerializeField] private int _minHP;
         [SerializeField] private int _maxHP;
+        public int MinHP => _minHP;
+        public int MaxHP => _maxHP;
     }
 
     [System.Serializable]

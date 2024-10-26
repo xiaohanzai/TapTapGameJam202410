@@ -6,14 +6,14 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private FairySystemManager fairySystemManager;
     [SerializeField] private CombatSystemManager combatSystemManager;
+    [SerializeField] private PlayerStatsManager playerStatsManager;
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private LightManager lightManager;
 
     [SerializeField] private float timeLimitToShareLight = 5f;
 
     [SerializeField] private int maxRounds = 10;
     private int round;
-
-    [SerializeField] private UIManager uiManager;
-    [SerializeField] private LightManager lightManager;
 
     void Start()
     {
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
         combatSystemManager.Evt_OnPlayerWon.AddListener(OnEachRoundStarts);
         combatSystemManager.Evt_OnPlayerLost.AddListener(OnPlayerLost);
+
         fairySystemManager.Evt_OnEncounterEnded.AddListener(OnFairyEncounterEnded);
 
         round = -1;
@@ -78,6 +79,14 @@ public class GameManager : MonoBehaviour
 
     private void OnFairyEncounterEnded()
     {
+        int minHP, maxHP;
+        (minHP, maxHP) = fairySystemManager.GetCurrentFairyHPs();
+        int hp = playerStatsManager.GenerateRandomHPBack(minHP, maxHP);
+        if (hp > 0)
+        {
+            combatSystemManager.ChangePlayerStats(hp, 0);
+            uiManager.ShowFairyEncounterText("Fairy gave you " + hp.ToString() + " HP back");
+        }
         fairySystemManager.Deactivate();
     }
 

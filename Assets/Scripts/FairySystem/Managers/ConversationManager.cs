@@ -62,5 +62,10 @@ namespace FairySystem
         {
             proceedBtn.gameObject.SetActive(true);
         }
+
+        public (int, int) GetCurrentFairyHPs()
+        {
+            return (fairyConversationDatas[ind].MinHP, fairyConversationDatas[ind].MaxHP);
+        }
     }
 }

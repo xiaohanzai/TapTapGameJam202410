@@ -52,12 +52,9 @@ namespace CombatSystem
         public virtual void SetUp()
         {
             _maxHealth = _characterParamsData.MaxHealth;
-            _currentHealth = _maxHealth;
-            Evt_OnHealthChanged.Invoke(_currentHealth, _maxHealth);
 
             _maxCharge = _characterParamsData.MaxCharge;
-            _currentCharge = 0;
-            Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
+            
             _thisRoundChargeLoss = 0;
 
             _attackPower = _characterParamsData.AttackPower;
