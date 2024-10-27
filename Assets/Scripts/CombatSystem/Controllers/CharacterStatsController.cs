@@ -183,15 +183,8 @@ namespace CombatSystem
         {
             _isDefending = false;
             _thisRoundChargeLoss = 0;
-            if (_buffType == BuffType.GainChargeFromDefense && _indFromDefense >= 0)
-            {
-                if (_indFromDefense == 1)
-                {
-                    Evt_OnDefended.Invoke(true);
-                    _indFromDefense = -1;
-                }
-                else _indFromDefense++;
-            }
+            Evt_OnDefended.Invoke(true);
+            _indFromDefense = -1;
         }
 
         public void Charge()

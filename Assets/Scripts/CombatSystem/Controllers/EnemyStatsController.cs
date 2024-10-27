@@ -20,7 +20,6 @@ namespace CombatSystem
 
             //Evt_OnCharacterDied.AddListener(() => { gameObject.SetActive(false); });
 
-            Evt_OnCharacterDied.AddListener(uiManager.ShowWinUI);
             Evt_OnChargeChanged.AddListener(uiManager.UpdateEnemyChargeBar);
             Evt_OnHealthChanged.AddListener(uiManager.UpdateEnemyHealthBar);
         }

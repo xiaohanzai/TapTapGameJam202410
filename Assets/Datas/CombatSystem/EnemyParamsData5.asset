@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b7ab263bbb64ee097b5f23d578d659, type: 3}
-  m_Name: EnemyParamsData4
+  m_Name: EnemyParamsData5
   m_EditorClassIdentifier: 
   _maxHealth: 10
   _maxCharge: 10
   _attackPower: 2
   _lightAmount: 4
   _buffType: 2
-  _personalityType: 0
+  _personalityType: 3

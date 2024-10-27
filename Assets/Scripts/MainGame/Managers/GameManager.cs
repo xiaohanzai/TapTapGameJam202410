@@ -24,16 +24,14 @@ public class GameManager : MonoBehaviour
         uiManager.Evt_OnShareLightBtnPressed.AddListener(lightManager.SharePlayerLightWithEnvironment);
         uiManager.Evt_OnProceedBtnPressed.AddListener(OnEachRoundProceeds);
         uiManager.Evt_OnAuroraBtnPressed.AddListener(OnAuroraDiscovered);
+        uiManager.Evt_OnFakeBossFightClicked.AddListener(StartFakeBossFight);
 
         combatSystemManager.Evt_OnPlayerWon.AddListener(OnEachRoundStarts);
         combatSystemManager.Evt_OnPlayerLost.AddListener(OnPlayerLost);
 
         fairySystemManager.Evt_OnEncounterEnded.AddListener(OnFairyEncounterEnded);
 
-        lightManager.SetUpParams(playerInitLight, playerMaxLight, environmentMaxLight);
-
-        round = -1;
-        OnEachRoundStarts();
+        RestartGame();
     }
 
     private void OnEachRoundStarts()
@@ -61,7 +59,7 @@ public class GameManager : MonoBehaviour
 
         if (lightManager.CheckIfAuroraVisible(round, maxRounds)) uiManager.ShowAuroraBtn();
         else if (round < maxRounds - 1) uiManager.ShowProceedBtn();
-        else uiManager.ShowBossFightBtn();
+        else uiManager.ShowFakeBossFightBtn();
     }
 
     private void OnEachRoundProceeds(int ind)
@@ -82,6 +80,7 @@ public class GameManager : MonoBehaviour
 
     private void OnAuroraDiscovered()
     {
+        combatSystemManager.Activate();
         combatSystemManager.StartBossFight();
     }
 
@@ -104,7 +103,18 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerLost()
     {
+        RestartGame();
+    }
+
+    private void RestartGame()
+    {
+        lightManager.SetUpParams(playerInitLight, playerMaxLight, environmentMaxLight);
         round = -1;
-        Debug.Log("game needs to restart");
+        OnEachRoundStarts();
+    }
+
+    private void StartFakeBossFight()
+    {
+        combatSystemManager.StartFakeBossFight();
     }
 }

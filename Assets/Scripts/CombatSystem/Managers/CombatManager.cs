@@ -43,16 +43,17 @@ namespace CombatSystem
 
         private void Update()
         {
-            if (!isInitialized) SetUpBattle();
+            if (!isInitialized) SetUpBattle(false);
         }
 
-        public void SetUpBattle()
+        public void SetUpBattle(bool isBoss)
         {
             isInitialized = true;
             _combatContext.ClearPlayerActions();
             _combatContext.ClearEnemyActions();
             enemyStatsController = enemyManager.GetAndShowCurrentEnemy();
-            uiManager.ShowDialogueMessage("A wild enemy has appeared");
+            if (!isBoss) uiManager.ShowDialogueMessage("A wild enemy has appeared");
+            else uiManager.ShowDialogueMessage("This is the final battle with the boss");
             uiManager.SetUpPlayerBuffText("");
             if (enemyStatsController == null)
             {
@@ -62,8 +63,8 @@ namespace CombatSystem
             {
                 enemyStatsController.SetUp();
                 playerStatsController.SetUp(playerCurrentHealth, playerCurrentCharge, playerCurrentLight);
+                uiManager.WinPanel.SetUpWinPanel(enemyStatsController.GetLightAmount(), enemyStatsController.GetBuffType(), playerStatsController.RevealBuff(false), enemyStatsController.RevealBuff(false));
             }
-            uiManager.WinPanel.SetUpWinPanel(enemyStatsController.GetLightAmount(), enemyStatsController.GetBuffType(), playerStatsController.RevealBuff(false), enemyStatsController.RevealBuff(false));
         }
 
         public void OnPlayerActionChosen(ActionName playerActionName)
@@ -124,7 +125,7 @@ namespace CombatSystem
             battleParent.SetActive(true);
             uiManager.HideEnemyUnseenUI();
             enemyManager.SetEnemy(i);
-            SetUpBattle();
+            SetUpBattle(i < 0);
             uiManager.ShowBattleStartUI();
         }
 

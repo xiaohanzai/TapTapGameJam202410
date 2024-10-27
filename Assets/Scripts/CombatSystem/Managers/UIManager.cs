@@ -23,6 +23,9 @@ namespace CombatSystem
         [SerializeField] private UIHoverRevealer playerBuffRevealer;
 
         [Header("Win Lose UI")]
+        [SerializeField] private GameObject bossWinPanel;
+        [SerializeField] private GameObject fakeBossWinPanel;
+        [SerializeField] private Button fakeBossWinButton;
         [SerializeField] private UIWinPanel winPanel;
         public UIWinPanel WinPanel => winPanel;
         [SerializeField] private GameObject loseUI;
@@ -50,6 +53,7 @@ namespace CombatSystem
             defenseButton.onClick.AddListener(OnPlayerChooseDefense);
 
             loseButton.onClick.AddListener(OnLosePanelBtnClicked);
+            fakeBossWinButton.onClick.AddListener(OnLosePanelBtnClicked);
 
             battleStartButton.onClick.AddListener(OnBattleStart);
 
@@ -186,19 +190,21 @@ namespace CombatSystem
         private void HideWinUI()
         {
             winPanel.gameObject.SetActive(false);
+            bossWinPanel.SetActive(false);
+            fakeBossWinPanel.SetActive(false);
         }
 
         private void OnWinPanelBtnClicked()
         {
             ShowBattleStartUI();
-            combatManager.SetUpBattle();
+            combatManager.SetUpBattle(false);
             HideWinUI();
         }
 
         private void OnLosePanelBtnClicked()
         {
             ShowBattleStartUI();
-            combatManager.SetUpBattle();
+            combatManager.SetUpBattle(false);
             HideLoseUI();
         }
 
@@ -245,6 +251,18 @@ namespace CombatSystem
         public void HideEnemyUnseenUI()
         {
             enemyUnseenUI.SetActive(false);
+        }
+
+        public void ShowBossWinUI()
+        {
+            bossWinPanel.gameObject.SetActive(true);
+            HideButtons();
+        }
+
+        public void ShowFakeBossWinUI()
+        {
+            fakeBossWinPanel.gameObject.SetActive(true);
+            HideButtons();
         }
     }
 }

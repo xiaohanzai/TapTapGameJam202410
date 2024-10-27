@@ -42,7 +42,7 @@ namespace FairySystem
 
         private void StartShowingSlides()
         {
-            ind++;
+            ind = (ind + 1) % fairyConversationDatas.Length;
             indSlide = 0;
             proceedBtn.gameObject.SetActive(false);
             if (ind < fairyConversationDatas.Length) ShowNextSlide();

@@ -307,6 +307,9 @@ MonoBehaviour:
   Evt_OnAuroraBtnPressed:
     m_PersistentCalls:
       m_Calls: []
+  Evt_OnFakeBossFightClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &503105274
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,6 +485,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 545855802}
     m_Modifications:
+    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 950562565937036550, guid: a7aa23dc223d4488ca58030724fd48df,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -532,6 +555,26 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4870329573574543166, guid: a7aa23dc223d4488ca58030724fd48df,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -565,6 +608,26 @@ PrefabInstance:
     - target: {fileID: 6389691122951798397, guid: a7aa23dc223d4488ca58030724fd48df,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8116129900108232144, guid: a7aa23dc223d4488ca58030724fd48df,
@@ -1022,9 +1085,9 @@ MonoBehaviour:
   uiManager: {fileID: 299467379}
   lightManager: {fileID: 1435492879}
   timeLimitToShareLight: 2
-  maxRounds: 5
+  maxRounds: 10
   playerInitLight: 5
-  playerMaxLight: 5
+  playerMaxLight: 8
   environmentMaxLight: 5
 --- !u!1 &1034041737
 GameObject:

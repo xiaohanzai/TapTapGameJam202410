@@ -17,4 +17,4 @@ MonoBehaviour:
   _attackPower: 2
   _lightAmount: 3
   _buffType: 5
-  _personalityType: 3
+  _personalityType: 2

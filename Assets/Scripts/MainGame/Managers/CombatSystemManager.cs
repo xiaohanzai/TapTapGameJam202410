@@ -37,7 +37,12 @@ public class CombatSystemManager : MonoBehaviour
 
     public void StartBossFight()
     {
-        Debug.Log("start boss fight...");
+        combatManager.StartCombat(-1);
+    }
+
+    public void StartFakeBossFight()
+    {
+        combatManager.StartCombat(-2);
     }
 
     public void StartCombat(int i)

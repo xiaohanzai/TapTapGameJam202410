@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     public UnityEvent Evt_OnShareLightBtnPressed = new UnityEvent();
     public UnityEvent<int> Evt_OnProceedBtnPressed = new UnityEvent<int>();
     public UnityEvent Evt_OnAuroraBtnPressed = new UnityEvent();
+    public UnityEvent Evt_OnFakeBossFightClicked = new UnityEvent();
 
     void Start()
     {
@@ -51,9 +52,9 @@ public class UIManager : MonoBehaviour
         auroraBtn.gameObject.SetActive(true);
     }
 
-    public void ShowBossFightBtn()
+    public void ShowFakeBossFightBtn()
     {
-        Debug.Log("fake boss fight started");
+        Evt_OnFakeBossFightClicked.Invoke();
     }
 
     private void OnProceedBtnPressed()

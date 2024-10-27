@@ -11,11 +11,21 @@ namespace CombatSystem
 
         private int ind;
 
+        private UIManager uiManager;
+
         void Start()
         {
-            foreach (var item in enemyStatsControllers)
+            uiManager = ServiceLocator.Get<UIManager>();
+
+            for (int i = 0; i < enemyStatsControllers.Length; i++)
             {
-                item.Evt_OnCharacterDied.AddListener(OnCurrentEnemyDied);
+                if (i < enemyStatsControllers.Length - 2)
+                {
+                    enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(uiManager.ShowWinUI);
+                    enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(OnCurrentEnemyDied);
+                }
+                else if (i == enemyStatsControllers.Length - 2) enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(uiManager.ShowFakeBossWinUI);
+                else enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(uiManager.ShowBossWinUI);
             }
         }
 
@@ -36,7 +46,8 @@ namespace CombatSystem
 
         public void SetEnemy(int i)
         {
-            ind = i;
+            ind = i % (enemyStatsControllers.Length - 2);
+            if (i < 0) ind = enemyStatsControllers.Length + i;
         }
     }
 }
