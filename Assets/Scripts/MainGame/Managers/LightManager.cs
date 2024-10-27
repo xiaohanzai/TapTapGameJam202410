@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LightManager : MonoBehaviour
 {
-    [SerializeField] private int playerLight;
+    private int playerLight;
     private int playerMaxLight;
-    [SerializeField] private int environmentLight;
+    private int environmentLight;
     private int environmentMaxLight;
+
+    [SerializeField] private Image forestImage;
+    [SerializeField] private Image playerLightImage;
 
     public void SetUpParams(int playerInitLight, int playerMaxLight, int envMaxLight)
     {
@@ -33,6 +37,8 @@ public class LightManager : MonoBehaviour
         {
             playerLight--;
             environmentLight++;
+            playerLightImage.color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (float)playerLight / playerMaxLight);
+            forestImage.color = Color.Lerp(Color.black, new Color(0, 0, 0, 0), (float)environmentLight / environmentMaxLight);
         }
     }
 
