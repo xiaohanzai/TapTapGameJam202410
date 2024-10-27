@@ -13,7 +13,7 @@ namespace CombatSystem
         [SerializeField] private int _maxCharge;
         public int MaxCharge => _maxCharge;
 
-        [SerializeField] private int _attackPower;
-        public int AttackPower => _attackPower;
+        [SerializeField] private float _attackPower;
+        public float AttackPower => _attackPower;
     }
 }

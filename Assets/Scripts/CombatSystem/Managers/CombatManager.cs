@@ -10,11 +10,10 @@ namespace CombatSystem
         [SerializeField] private GameObject battleParent;
 
         [SerializeField] private PlayerStatsController playerStatsController;
-        private int playerCurrentHealth;
+        private float playerCurrentHealth;
         private int playerMaxHealth;
         private int playerCurrentCharge;
         private int playerMaxCharge;
-        private int playerCurrentLight;
 
         private EnemyStatsController enemyStatsController;
 
@@ -43,10 +42,10 @@ namespace CombatSystem
 
         private void Update()
         {
-            if (!isInitialized) SetUpBattle(false);
+            if (!isInitialized) SetUpBattle(false, 1, true);
         }
 
-        public void SetUpBattle(bool isBoss)
+        public void SetUpBattle(bool isBoss, float fac, bool isChargeMemLost)
         {
             isInitialized = true;
             _combatContext.ClearPlayerActions();
@@ -61,8 +60,8 @@ namespace CombatSystem
             }
             else
             {
-                enemyStatsController.SetUp();
-                playerStatsController.SetUp(playerCurrentHealth, playerCurrentCharge, playerCurrentLight);
+                enemyStatsController.SetUp(fac);
+                playerStatsController.SetUp(playerCurrentHealth, isChargeMemLost? 0 : playerCurrentCharge, fac);
                 uiManager.WinPanel.SetUpWinPanel(enemyStatsController.GetLightAmount(), enemyStatsController.GetBuffType(), playerStatsController.RevealBuff(false), enemyStatsController.RevealBuff(false));
             }
         }
@@ -120,16 +119,16 @@ namespace CombatSystem
             uiManager.SetUpPlayerBuffText(playerStatsController.RevealBuff(false));
         }
 
-        public void StartCombat(int i)
+        public void StartCombat(int i, float fac, bool isChargeMemLost)
         {
             battleParent.SetActive(true);
             uiManager.HideEnemyUnseenUI();
             enemyManager.SetEnemy(i);
-            SetUpBattle(i < 0);
+            SetUpBattle(i < 0, fac, isChargeMemLost);
             uiManager.ShowBattleStartUI();
         }
 
-        private void OnPlayerHealthStatsChanged(int currentHealth, int maxHealth)
+        private void OnPlayerHealthStatsChanged(float currentHealth, int maxHealth)
         {
             playerCurrentHealth = currentHealth;
             playerMaxHealth = maxHealth;
@@ -141,24 +140,28 @@ namespace CombatSystem
             playerMaxCharge = maxCharge;
         }
 
-        public (int, int) GetPlayerCurrentStats()
+        public (float, int) GetPlayerCurrentStats()
         {
             return (playerCurrentHealth, playerCurrentCharge);
         }
 
-        public void ChangePlayerCurrentStats(int delatHealth, int deltaCharge, int light)
+        public void ChangePlayerCurrentStats(int delatHealth, int deltaCharge)
         {
             playerCurrentHealth += delatHealth;
             if (playerCurrentHealth > playerMaxHealth) playerCurrentHealth = playerMaxHealth;
             playerCurrentCharge += deltaCharge;
             if (playerCurrentCharge > playerMaxCharge) playerCurrentCharge = playerMaxCharge;
-            playerCurrentLight = light;
         }
 
         public void ShowEnemyUnseenUI()
         {
             battleParent.SetActive(false);
             uiManager.ShowEnemyUnseenUI();
+        }
+
+        public string GetNextEnemyDescription()
+        {
+            return enemyStatsController.GetDescription();
         }
     }
 }

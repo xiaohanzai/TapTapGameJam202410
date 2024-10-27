@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 10
   _maxCharge: 10
-  _attackPower: 3
+  _attackPower: 2

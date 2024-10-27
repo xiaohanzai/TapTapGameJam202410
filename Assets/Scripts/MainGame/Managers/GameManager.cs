@@ -15,9 +15,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int maxRounds = 10;
     private int round;
 
-    [SerializeField] private int playerInitLight;
-    [SerializeField] private int playerMaxLight;
-    [SerializeField] private int environmentMaxLight;
+    private bool isChargeMemLost;
+
+    [SerializeField] private int playerInitLight = 10;
+    [SerializeField] private int environmentMaxLight = 20;
+    [SerializeField] private float lightThreshold1 = 10;
+    [SerializeField] private float lightThreshold2 = 20;
+
+    private int nDeaths;
+    private float fac;
 
     void Start()
     {
@@ -25,13 +31,15 @@ public class GameManager : MonoBehaviour
         uiManager.Evt_OnProceedBtnPressed.AddListener(OnEachRoundProceeds);
         uiManager.Evt_OnAuroraBtnPressed.AddListener(OnAuroraDiscovered);
         uiManager.Evt_OnFakeBossFightClicked.AddListener(StartFakeBossFight);
+        uiManager.Evt_OnStartGameBtnPressed.AddListener(RestartGame);
 
+        combatSystemManager.Evt_OnPlayerWonBoss.AddListener(() => { uiManager.ShowMainMenuUI(); });
         combatSystemManager.Evt_OnPlayerWon.AddListener(OnEachRoundStarts);
         combatSystemManager.Evt_OnPlayerLost.AddListener(OnPlayerLost);
 
         fairySystemManager.Evt_OnEncounterEnded.AddListener(OnFairyEncounterEnded);
 
-        RestartGame();
+        //RestartGame();
     }
 
     private void OnEachRoundStarts()
@@ -44,6 +52,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Co_OnEachRoundStarts()
     {
+        yield return null;
+
+        if (round > 0) lightManager.SetPayerCurrentLight(combatSystemManager.GetPlayerStats().Item1);
         uiManager.ShowShareLightBtn();
 
         float t = timeLimitToShareLight;
@@ -67,13 +78,13 @@ public class GameManager : MonoBehaviour
         if (ind == 0)
         {
             fairySystemManager.Activate();
-            if (lightManager.IsFairySeeable()) fairySystemManager.ShowFairy(round);
+            if (lightManager.IsFairySeeable(round)) fairySystemManager.ShowFairy(round);
             else fairySystemManager.ShowFairyUnseenUI();
         }
         else
         {
             combatSystemManager.Activate();
-            if (lightManager.IsEnemySeeable()) combatSystemManager.StartCombat(round);
+            if (lightManager.IsEnemySeeable(round)) combatSystemManager.StartCombat(round, fac, isChargeMemLost);
             else combatSystemManager.ShowEnemyUnseenUI();
         }
     }
@@ -81,7 +92,7 @@ public class GameManager : MonoBehaviour
     private void OnAuroraDiscovered()
     {
         combatSystemManager.Activate();
-        combatSystemManager.StartBossFight();
+        combatSystemManager.StartBossFight(fac, isChargeMemLost);
     }
 
     private void OnFairyEncounterEnded()
@@ -91,30 +102,42 @@ public class GameManager : MonoBehaviour
             int minHP, maxHP;
             (minHP, maxHP) = fairySystemManager.GetCurrentFairyHPs();
             int hp = playerStatsManager.GenerateRandomHPBack(minHP, maxHP);
-            int light = lightManager.GetPlayerLight();
-            if (hp > 0)
+            //if (hp > 0)
+            //{
+            combatSystemManager.ChangePlayerStats(hp - lightManager.GetDeltaLight(), 0);
+            float playerLight = combatSystemManager.GetPlayerStats().Item1;
+            lightManager.SetPayerCurrentLight(playerLight);
+            string s = "Fairy gave you " + hp.ToString() + " light back;\nYou now have " + ((int)playerLight).ToString() + "light";
+            float t = 2f;
+            //}
+            if (lightManager.GetEnvironmentLight() > lightThreshold1)
             {
-                combatSystemManager.ChangePlayerStats(hp, 0, light);
-                uiManager.ShowFairyEncounterText("Fairy gave you " + hp.ToString() + " HP back");
+                t = 6f;
+                s += "\nYour next enemy pattern (if enemy appears): " + combatSystemManager.GetNextEnemyDescription();
+                if (lightManager.GetEnvironmentLight() < lightThreshold2) isChargeMemLost = true;
+                else isChargeMemLost = false;
             }
+            uiManager.ShowFairyEncounterText(s, t);
         }
         fairySystemManager.Deactivate();
     }
 
     private void OnPlayerLost()
     {
-        RestartGame();
+        nDeaths++;
+        uiManager.ShowMainMenuUI();
     }
 
     private void RestartGame()
     {
-        lightManager.SetUpParams(playerInitLight, playerMaxLight, environmentMaxLight);
+        fac = Mathf.Max(1f - 0.1f * nDeaths, 0.6f);
+        lightManager.SetUpParams(playerInitLight, environmentMaxLight);
         round = -1;
         OnEachRoundStarts();
     }
 
     private void StartFakeBossFight()
     {
-        combatSystemManager.StartFakeBossFight();
+        combatSystemManager.StartFakeBossFight(fac, isChargeMemLost);
     }
 }

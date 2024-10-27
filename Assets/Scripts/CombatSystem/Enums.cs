@@ -17,6 +17,7 @@ namespace CombatSystem
         MindlessCDA,
         Revenge,
         PurelyRandom,
+        Boss,
     }
 
     public enum BuffType

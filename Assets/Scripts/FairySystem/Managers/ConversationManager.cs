@@ -19,6 +19,8 @@ namespace FairySystem
         [SerializeField] private GameObject slidesUI;
         [SerializeField] private GameObject fairyUnseenUI;
 
+        [SerializeField] private float waitTime = 2f;
+
         private int ind;
         private int indSlide;
 
@@ -54,8 +56,8 @@ namespace FairySystem
             textMeshPro.text = fairyConversationDatas[ind].ConversationDatas[indSlide].text;
             nextBtn.gameObject.SetActive(false);
             indSlide++;
-            if (indSlide < fairyConversationDatas[ind].ConversationDatas.Count) Invoke("DelayedShowNextBtn", 2f);
-            else Invoke("DelayedShowProceedBtn", 2f);
+            if (indSlide < fairyConversationDatas[ind].ConversationDatas.Count) Invoke("DelayedShowNextBtn", waitTime);
+            else Invoke("DelayedShowProceedBtn", waitTime);
         }
 
         private void DelayedShowNextBtn()

@@ -7,6 +7,9 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private GameObject mainMenuUI;
+    [SerializeField] private Button startGameBtn;
+
     [SerializeField] private TextMeshProUGUI fairyEncounterText;
     [SerializeField] private TextMeshProUGUI countDownTxt;
 
@@ -16,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     private int ind;
 
+    public UnityEvent Evt_OnStartGameBtnPressed = new UnityEvent();
     public UnityEvent Evt_OnShareLightBtnPressed = new UnityEvent();
     public UnityEvent<int> Evt_OnProceedBtnPressed = new UnityEvent<int>();
     public UnityEvent Evt_OnAuroraBtnPressed = new UnityEvent();
@@ -23,6 +27,12 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        startGameBtn.onClick.AddListener(() =>
+        {
+            mainMenuUI.SetActive(false);
+            Evt_OnStartGameBtnPressed.Invoke();
+        });
+
         shareLightBtn.onClick.AddListener(OnShareLightBtnPressed);
         proceedBtn.onClick.AddListener(OnProceedBtnPressed);
         auroraBtn.onClick.AddListener(OnAuroraBtnPressed);
@@ -79,14 +89,19 @@ public class UIManager : MonoBehaviour
         else countDownTxt.text = "";
     }
 
-    public void ShowFairyEncounterText(string s)
+    public void ShowFairyEncounterText(string s, float time)
     {
         fairyEncounterText.text = s;
-        Invoke("DelayedResetFairyEncounterText", 2f);
+        Invoke("DelayedResetFairyEncounterText", time);
     }
 
     private void DelayedResetFairyEncounterText()
     {
         fairyEncounterText.text = "";
+    }
+
+    public void ShowMainMenuUI()
+    {
+        mainMenuUI.SetActive(true);
     }
 }

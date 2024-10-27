@@ -31,7 +31,7 @@ namespace CombatSystem
 
         private void OnCurrentEnemyDied()
         {
-            ind++;
+            ind = (ind + 1) % (enemyStatsControllers.Length - 1);
         }
 
         public EnemyStatsController GetAndShowCurrentEnemy()

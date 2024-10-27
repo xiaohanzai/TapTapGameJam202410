@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b7ab263bbb64ee097b5f23d578d659, type: 3}
   m_Name: EnemyParamsData3
   m_EditorClassIdentifier: 
-  _maxHealth: 10
-  _maxCharge: 10
+  _maxHealth: 15
+  _maxCharge: 15
   _attackPower: 2
-  _lightAmount: 3
   _buffType: 5
   _personalityType: 2

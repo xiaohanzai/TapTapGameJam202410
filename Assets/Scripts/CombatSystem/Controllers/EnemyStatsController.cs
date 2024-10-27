@@ -38,7 +38,6 @@ namespace CombatSystem
 
             if (_characterParamsData is EnemyParamsDataSO enemyParamsData)
             {
-                _lightAmount = enemyParamsData.LightAmount;
                 _personalityType = enemyParamsData.PersonalityType;
                 _buffType = enemyParamsData.BuffType;
             }
@@ -46,6 +45,18 @@ namespace CombatSystem
             {
                 Debug.LogError("Need to input EnemyParamsDataSO for enemies!");
             }
+        }
+
+        public void SetUp(float fac)
+        {
+            SetUp();
+
+            _attackPower *= fac;
+        }
+
+        public float GetLightAmount()
+        {
+            return _maxHealth;
         }
 
         public ActionName ChooseAction(ActionName playerActionName, CombatContext combatContext)
@@ -60,6 +71,8 @@ namespace CombatSystem
                     return ChooseActionMindlessCDA();
                 case EnemyPersonalityType.Revenge:
                     return ChooseActionMindlessRevenge(combatContext);
+                case EnemyPersonalityType.Boss:
+                    return ChooseActionBoss(playerActionName);
                 default:
                     return ChooseActionDefault(playerActionName, combatContext);
             }
@@ -193,6 +206,50 @@ namespace CombatSystem
                     else return ActionName.Charge;
                 default:
                     return ActionName.Charge;
+            }
+        }
+
+        private ActionName ChooseActionBoss(ActionName playerActionName)
+        {
+            _ind = (_ind + 1) % 2;
+            if (_ind == 0)
+            {
+                if (playerActionName == ActionName.Attack) return ActionName.Charge;
+                else if (playerActionName == ActionName.Defense)
+                {
+                    if (_currentCharge > 0) return ActionName.Attack;
+                    else return ActionName.Defense;
+                }
+                else return ActionName.Defense;
+            }
+            else
+            {
+                if (playerActionName == ActionName.Attack) return ActionName.Defense;
+                else if (playerActionName == ActionName.Defense) return ActionName.Charge;
+                else
+                {
+                    if (_currentCharge > 0) return ActionName.Attack;
+                    else return ActionName.Charge;
+                }
+            }
+        }
+
+        public string GetDescription()
+        {
+            switch (_personalityType)
+            {
+                case EnemyPersonalityType.MindlessCAD:
+                    return "actions loop over charge -> attack -> defend";
+                case EnemyPersonalityType.MindlessCDA:
+                    return "actions loop over charge -> defend -> attack";
+                case EnemyPersonalityType.Revenge:
+                    return "will attack in the next round if you attack";
+                case EnemyPersonalityType.PurelyRandom:
+                    return "actions are purely random";
+                case EnemyPersonalityType.Boss:
+                    return "can't tell you";
+                default:
+                    return "";
             }
         }
     }

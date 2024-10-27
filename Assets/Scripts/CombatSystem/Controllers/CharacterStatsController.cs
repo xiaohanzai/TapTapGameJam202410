@@ -12,23 +12,23 @@ namespace CombatSystem
         [SerializeField] protected Animator _animator;
 
         public UnityEvent<int, int> Evt_OnChargeChanged = new UnityEvent<int, int>();
-        public UnityEvent<int, int> Evt_OnHealthChanged = new UnityEvent<int, int>();
+        public UnityEvent<float, int> Evt_OnHealthChanged = new UnityEvent<float, int>();
         public UnityEvent<bool> Evt_OnDefended = new UnityEvent<bool>();
         public UnityEvent Evt_OnCharacterDied = new UnityEvent();
 
-        protected int _currentHealth;
+        protected float _currentHealth;
         protected int _maxHealth;
 
         protected int _currentCharge;
         protected int _maxCharge;
         protected int _thisRoundChargeLoss;
 
-        protected int _attackPower;
-        protected int _thisRoundAttackPower;
+        protected float _attackPower;
+        protected float _thisRoundAttackPower;
 
-        protected int _lightAmount;
+        protected float _lightAmount;
 
-        private int _shield;
+        private float _shield;
 
         protected float _attackAnimationDuration;
         public float AttackAnimationDuration => _attackAnimationDuration;
@@ -145,13 +145,13 @@ namespace CombatSystem
             commandManager.AddCommand(new StatsResetCommand(this));
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
             if (_isDefending) return;
 
             if (_buffType == BuffType.TakeDamageOnCharge && _currentCharge > _thisRoundChargeLoss)
             {
-                int damageOnCharge = Mathf.Min(damage, _currentCharge - _thisRoundChargeLoss);
+                int damageOnCharge = Mathf.Min(Mathf.CeilToInt(damage), _currentCharge - _thisRoundChargeLoss);
                 _currentCharge -= damageOnCharge;
                 damage -= damageOnCharge;
             }
@@ -201,7 +201,7 @@ namespace CombatSystem
             }
         }
 
-        public int GetAttackPower()
+        public float GetAttackPower()
         {
             return _thisRoundAttackPower;
         }
@@ -211,21 +211,6 @@ namespace CombatSystem
             Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
             Evt_OnHealthChanged.Invoke(Mathf.Max(_currentHealth, 0), _maxHealth);
             if (_currentHealth <= 0) Evt_OnCharacterDied.Invoke();
-        }
-
-        public void AddLight(int amount)
-        {
-            _lightAmount += amount;
-        }
-
-        public void LoseLight(int amount)
-        {
-            _lightAmount -= amount;
-        }
-
-        public int GetLightAmount()
-        {
-            return _lightAmount;
         }
 
         public void SetBuffType(BuffType buffType)

@@ -24,6 +24,7 @@ namespace CombatSystem
 
         [Header("Win Lose UI")]
         [SerializeField] private GameObject bossWinPanel;
+        //[SerializeField] private Button bossWinButton;
         [SerializeField] private GameObject fakeBossWinPanel;
         [SerializeField] private Button fakeBossWinButton;
         [SerializeField] private UIWinPanel winPanel;
@@ -106,14 +107,14 @@ namespace CombatSystem
             defenseButton.enabled = enabled;
         }
 
-        public void UpdatePlayerHealthBar(int currentVal, int maxVal)
+        public void UpdatePlayerHealthBar(float currentVal, int maxVal)
         {
-            playerHUD.SetHealthBar((float)currentVal / maxVal);
+            playerHUD.SetHealthBar(currentVal / maxVal);
         }
 
-        public void UpdateEnemyHealthBar(int currentVal, int maxVal)
+        public void UpdateEnemyHealthBar(float currentVal, int maxVal)
         {
-            enemyHUD.SetHealthBar((float)currentVal / maxVal);
+            enemyHUD.SetHealthBar(currentVal / maxVal);
         }
 
         public void UpdatePlayerChargeBar(int currentVal, int maxVal)
@@ -197,14 +198,14 @@ namespace CombatSystem
         private void OnWinPanelBtnClicked()
         {
             ShowBattleStartUI();
-            combatManager.SetUpBattle(false);
+            combatManager.SetUpBattle(false, 1, false);
             HideWinUI();
         }
 
         private void OnLosePanelBtnClicked()
         {
             ShowBattleStartUI();
-            combatManager.SetUpBattle(false);
+            combatManager.SetUpBattle(false, 1, false);
             HideLoseUI();
         }
 
