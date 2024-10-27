@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int maxRounds = 10;
     private int round;
 
+    [SerializeField] private int playerInitLight;
+    [SerializeField] private int playerMaxLight;
+    [SerializeField] private int environmentMaxLight;
+
     void Start()
     {
         uiManager.Evt_OnShareLightBtnPressed.AddListener(lightManager.SharePlayerLightWithEnvironment);
@@ -25,6 +29,8 @@ public class GameManager : MonoBehaviour
         combatSystemManager.Evt_OnPlayerLost.AddListener(OnPlayerLost);
 
         fairySystemManager.Evt_OnEncounterEnded.AddListener(OnFairyEncounterEnded);
+
+        lightManager.SetUpParams(playerInitLight, playerMaxLight, environmentMaxLight);
 
         round = -1;
         OnEachRoundStarts();
@@ -53,7 +59,7 @@ public class GameManager : MonoBehaviour
         uiManager.UpdateCountDownText(-1);
         uiManager.HideShareLightBtn();
 
-        if (lightManager.CheckIfAuroraVisible(round)) uiManager.ShowAuroraBtn();
+        if (lightManager.CheckIfAuroraVisible(round, maxRounds)) uiManager.ShowAuroraBtn();
         else if (round < maxRounds - 1) uiManager.ShowProceedBtn();
         else uiManager.ShowBossFightBtn();
     }
@@ -63,12 +69,14 @@ public class GameManager : MonoBehaviour
         if (ind == 0)
         {
             fairySystemManager.Activate();
-            fairySystemManager.ShowFairy(round);
+            if (lightManager.IsFairySeeable()) fairySystemManager.ShowFairy(round);
+            else fairySystemManager.ShowFairyUnseenUI();
         }
         else
         {
             combatSystemManager.Activate();
-            combatSystemManager.StartCombat(round);
+            if (lightManager.IsEnemySeeable()) combatSystemManager.StartCombat(round);
+            else combatSystemManager.ShowEnemyUnseenUI();
         }
     }
 
@@ -79,13 +87,17 @@ public class GameManager : MonoBehaviour
 
     private void OnFairyEncounterEnded()
     {
-        int minHP, maxHP;
-        (minHP, maxHP) = fairySystemManager.GetCurrentFairyHPs();
-        int hp = playerStatsManager.GenerateRandomHPBack(minHP, maxHP);
-        if (hp > 0)
+        if (fairySystemManager.IsFairyMet)
         {
-            combatSystemManager.ChangePlayerStats(hp, 0);
-            uiManager.ShowFairyEncounterText("Fairy gave you " + hp.ToString() + " HP back");
+            int minHP, maxHP;
+            (minHP, maxHP) = fairySystemManager.GetCurrentFairyHPs();
+            int hp = playerStatsManager.GenerateRandomHPBack(minHP, maxHP);
+            int light = lightManager.GetPlayerLight();
+            if (hp > 0)
+            {
+                combatSystemManager.ChangePlayerStats(hp, 0, light);
+                uiManager.ShowFairyEncounterText("Fairy gave you " + hp.ToString() + " HP back");
+            }
         }
         fairySystemManager.Deactivate();
     }

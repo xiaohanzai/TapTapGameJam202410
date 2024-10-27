@@ -16,6 +16,9 @@ namespace FairySystem
         [SerializeField] private Image image;
         [SerializeField] private TextMeshProUGUI textMeshPro;
 
+        [SerializeField] private GameObject slidesUI;
+        [SerializeField] private GameObject fairyUnseenUI;
+
         private int ind;
         private int indSlide;
 
@@ -32,6 +35,8 @@ namespace FairySystem
         public void StartShowingSlides(int i)
         {
             ind = i - 1;
+            slidesUI.SetActive(true);
+            fairyUnseenUI.SetActive(false);
             StartShowingSlides();
         }
 
@@ -66,6 +71,13 @@ namespace FairySystem
         public (int, int) GetCurrentFairyHPs()
         {
             return (fairyConversationDatas[ind].MinHP, fairyConversationDatas[ind].MaxHP);
+        }
+
+        public void ShowFairyUnseenUI()
+        {
+            fairyUnseenUI.SetActive(true);
+            slidesUI.SetActive(false);
+            proceedBtn.gameObject.SetActive(true);
         }
     }
 }

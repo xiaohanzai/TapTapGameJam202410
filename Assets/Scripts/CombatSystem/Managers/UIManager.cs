@@ -32,6 +32,9 @@ namespace CombatSystem
         [SerializeField] private GameObject battleStartUI;
         [SerializeField] private Button battleStartButton;
 
+        [Header("Enemy Unseen UI")]
+        [SerializeField] private GameObject enemyUnseenUI;
+
         private CombatManager combatManager;
         private CommandManager commandManager;
 
@@ -221,6 +224,7 @@ namespace CombatSystem
             HideWinUI();
             HideLoseUI();
             battleStartUI.SetActive(true);
+            enemyUnseenUI.SetActive(false);
         }
 
         private void HideBattleStartUI()
@@ -231,6 +235,16 @@ namespace CombatSystem
         public void SetUpPlayerBuffText(string s)
         {
             playerBuffRevealer.SetHoverText(s);
+        }
+
+        public void ShowEnemyUnseenUI()
+        {
+            enemyUnseenUI.SetActive(true);
+        }
+
+        public void HideEnemyUnseenUI()
+        {
+            enemyUnseenUI.SetActive(false);
         }
     }
 }

@@ -482,26 +482,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 545855802}
     m_Modifications:
-    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 789114383927806880, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 950562565937036550, guid: a7aa23dc223d4488ca58030724fd48df,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -552,26 +532,6 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3726698054849632849, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4870329573574543166, guid: a7aa23dc223d4488ca58030724fd48df,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -605,26 +565,6 @@ PrefabInstance:
     - target: {fileID: 6389691122951798397, guid: a7aa23dc223d4488ca58030724fd48df,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7543616531230426039, guid: a7aa23dc223d4488ca58030724fd48df,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8116129900108232144, guid: a7aa23dc223d4488ca58030724fd48df,
@@ -1083,6 +1023,9 @@ MonoBehaviour:
   lightManager: {fileID: 1435492879}
   timeLimitToShareLight: 2
   maxRounds: 5
+  playerInitLight: 5
+  playerMaxLight: 5
+  environmentMaxLight: 5
 --- !u!1 &1034041737
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,8 +1272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe8123f88acf46418a3920eb582ab5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInitLight: 5
-  environmentMaxLight: 5
+  playerLight: 0
+  environmentLight: 0
 --- !u!1 &1459895856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1978,6 +1921,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1701736700815192297, guid: 3fe739fc7ba484fa082c164845236ed5,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -392.28995
       objectReference: {fileID: 0}
     - target: {fileID: 7362283795988302699, guid: 3fe739fc7ba484fa082c164845236ed5,
         type: 3}

@@ -7,11 +7,14 @@ namespace CombatSystem
 {
     public class CombatManager : MonoBehaviour
     {
+        [SerializeField] private GameObject battleParent;
+
         [SerializeField] private PlayerStatsController playerStatsController;
         private int playerCurrentHealth;
         private int playerMaxHealth;
         private int playerCurrentCharge;
         private int playerMaxCharge;
+        private int playerCurrentLight;
 
         private EnemyStatsController enemyStatsController;
 
@@ -58,7 +61,7 @@ namespace CombatSystem
             else
             {
                 enemyStatsController.SetUp();
-                playerStatsController.SetUp(playerCurrentHealth, playerCurrentCharge);
+                playerStatsController.SetUp(playerCurrentHealth, playerCurrentCharge, playerCurrentLight);
             }
             uiManager.WinPanel.SetUpWinPanel(enemyStatsController.GetLightAmount(), enemyStatsController.GetBuffType(), playerStatsController.RevealBuff(false), enemyStatsController.RevealBuff(false));
         }
@@ -118,6 +121,8 @@ namespace CombatSystem
 
         public void StartCombat(int i)
         {
+            battleParent.SetActive(true);
+            uiManager.HideEnemyUnseenUI();
             enemyManager.SetEnemy(i);
             SetUpBattle();
             uiManager.ShowBattleStartUI();
@@ -140,12 +145,19 @@ namespace CombatSystem
             return (playerCurrentHealth, playerCurrentCharge);
         }
 
-        public void ChangePlayerCurrentStats(int delatHealth, int deltaCharge)
+        public void ChangePlayerCurrentStats(int delatHealth, int deltaCharge, int light)
         {
             playerCurrentHealth += delatHealth;
             if (playerCurrentHealth > playerMaxHealth) playerCurrentHealth = playerMaxHealth;
             playerCurrentCharge += deltaCharge;
             if (playerCurrentCharge > playerMaxCharge) playerCurrentCharge = playerMaxCharge;
+            playerCurrentLight = light;
+        }
+
+        public void ShowEnemyUnseenUI()
+        {
+            battleParent.SetActive(false);
+            uiManager.ShowEnemyUnseenUI();
         }
     }
 }

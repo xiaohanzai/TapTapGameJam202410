@@ -13,6 +13,9 @@ public class FairySystemManager : MonoBehaviour
 
     public UnityEvent Evt_OnEncounterEnded = new UnityEvent();
 
+    private bool isFairyMet;
+    public bool IsFairyMet => isFairyMet;
+
     void Start()
     {
         proceedBtn.onClick.AddListener(OnProceedBtnPressed);
@@ -35,11 +38,18 @@ public class FairySystemManager : MonoBehaviour
 
     public void ShowFairy(int i)
     {
+        isFairyMet = true;
         conversationManager.StartShowingSlides(i);
     }
 
     public (int, int) GetCurrentFairyHPs()
     {
         return conversationManager.GetCurrentFairyHPs();
+    }
+
+    public void ShowFairyUnseenUI()
+    {
+        isFairyMet = false;
+        conversationManager.ShowFairyUnseenUI();
     }
 }

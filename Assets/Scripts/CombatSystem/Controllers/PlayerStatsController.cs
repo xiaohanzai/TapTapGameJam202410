@@ -40,7 +40,7 @@ namespace CombatSystem
             if (_buffType == BuffType.Null) _buffType = _availableBuffs[Random.Range(0, _availableBuffs.Length)];
         }
 
-        public void SetUp(int health, int charge)
+        public void SetUp(int health, int charge, int light)
         {
             base.SetUp();
 
@@ -49,6 +49,8 @@ namespace CombatSystem
 
             _currentCharge = charge > 0? charge : 0;
             Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
+
+            _lightAmount = light;
 
             // for debugging
             //_buffType = _availableBuffs[_indBuff % 5];

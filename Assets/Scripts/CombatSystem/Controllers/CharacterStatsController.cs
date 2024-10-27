@@ -26,7 +26,7 @@ namespace CombatSystem
         protected int _attackPower;
         protected int _thisRoundAttackPower;
 
-        [SerializeField] protected int _lightAmount;
+        protected int _lightAmount;
 
         private int _shield;
 

@@ -10,9 +10,9 @@ public class CombatSystemManager : MonoBehaviour
 
     [SerializeField] private Button[] winBtns;
     [SerializeField] private Button loseBtn;
+    [SerializeField] private Button proceedBtn;
 
     [SerializeField] private CombatSystem.CombatManager combatManager;
-    [SerializeField] private PlayerStatsManager playerStatsManager;
 
     public UnityEvent Evt_OnPlayerWon = new UnityEvent();
     public UnityEvent Evt_OnPlayerLost = new UnityEvent();
@@ -22,6 +22,7 @@ public class CombatSystemManager : MonoBehaviour
         foreach (var btn in winBtns)
             btn.onClick.AddListener(() => { Evt_OnPlayerWon.Invoke(); });
         loseBtn.onClick.AddListener(() => { Evt_OnPlayerLost.Invoke(); });
+        proceedBtn.onClick.AddListener(() => { Evt_OnPlayerWon.Invoke(); });
     }
 
     public void Activate()
@@ -44,8 +45,13 @@ public class CombatSystemManager : MonoBehaviour
         combatManager.StartCombat(i);
     }
 
-    public void ChangePlayerStats(int deltaHealth, int deltaCharge)
+    public void ChangePlayerStats(int deltaHealth, int deltaCharge, int light)
     {
-        combatManager.ChangePlayerCurrentStats(deltaHealth, deltaCharge);
+        combatManager.ChangePlayerCurrentStats(deltaHealth, deltaCharge, light);
+    }
+
+    public void ShowEnemyUnseenUI()
+    {
+        combatManager.ShowEnemyUnseenUI();
     }
 }
