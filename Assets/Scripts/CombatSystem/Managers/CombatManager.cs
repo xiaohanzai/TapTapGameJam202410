@@ -51,8 +51,8 @@ namespace CombatSystem
             _combatContext.ClearPlayerActions();
             _combatContext.ClearEnemyActions();
             enemyStatsController = enemyManager.GetAndShowCurrentEnemy();
-            if (!isBoss) uiManager.ShowDialogueMessage("A wild enemy has appeared");
-            else uiManager.ShowDialogueMessage("This is the final battle with the boss");
+            if (!isBoss) uiManager.ShowDialogueMessage("敌人出现了");
+            else uiManager.ShowDialogueMessage("这是最终的boss战");
             uiManager.SetUpPlayerBuffText("");
             if (enemyStatsController == null)
             {
@@ -76,7 +76,7 @@ namespace CombatSystem
             // for simplicity, play animations together and then take damage / charge etc.
             uiManager.QueueInBtnsVisibilityCommand(0, false);
 
-            string s = "<color=\"red\">Player</color> chooses to " + uiManager.ActionName2String(playerActionName) + "\n" + "<color=\"red\">Enemy</color> chooses to " + uiManager.ActionName2String(enemyActionName);
+            string s = "<color=\"red\">玩家</color> 选择 " + uiManager.ActionName2String(playerActionName) + "\n" + "<color=\"red\">敌人</color> 选择 " + uiManager.ActionName2String(enemyActionName);
             uiManager.QueueInDialogueTextCommand(s, 1.5f);
 
             if (playerActionName == ActionName.Defense) playerStatsController.QueueInActionCommand(playerActionName, 0.01f, enemyStatsController);
@@ -100,7 +100,7 @@ namespace CombatSystem
             {
                 //Debug.Log("still alive");
                 uiManager.ShowButtons();
-                uiManager.ShowDialogueMessage("Choose action");
+                uiManager.ShowDialogueMessage("选择下一步行动");
 
                 playerStatsController.ResetStats();
                 enemyStatsController.ResetStats();
@@ -113,8 +113,8 @@ namespace CombatSystem
 
         public void RevealBuffs()
         {
-            string s = "<color=\"red\">Player buff:</color> " + playerStatsController.RevealBuff(true) + "\n";
-            s += "<color=\"red\">Enemy buff:</color> " + enemyStatsController.RevealBuff(true);
+            string s = "<color=\"red\">玩家技能:</color> " + playerStatsController.RevealBuff(true) + "\n";
+            s += "<color=\"red\">敌人技能:</color> " + enemyStatsController.RevealBuff(true);
             uiManager.ShowDialogueMessage(s);
             uiManager.SetUpPlayerBuffText(playerStatsController.RevealBuff(false));
         }

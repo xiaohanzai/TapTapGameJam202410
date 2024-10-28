@@ -76,7 +76,7 @@ namespace CombatSystem
         public void DelayedOnBattleStart()
         {
             ShowButtons();
-            ShowDialogueMessage("Choose action");
+            ShowDialogueMessage("选择下一步行动");
         }
 
         public void QueueInDialogueTextCommand(string s, float waitTime)
@@ -109,22 +109,22 @@ namespace CombatSystem
 
         public void UpdatePlayerHealthBar(float currentVal, int maxVal)
         {
-            playerHUD.SetHealthBar(currentVal / maxVal);
+            playerHUD.SetHealthBar(currentVal, maxVal);
         }
 
         public void UpdateEnemyHealthBar(float currentVal, int maxVal)
         {
-            enemyHUD.SetHealthBar(currentVal / maxVal);
+            enemyHUD.SetHealthBar(currentVal, maxVal);
         }
 
         public void UpdatePlayerChargeBar(int currentVal, int maxVal)
         {
-            playerHUD.SetChargeBar((float)currentVal / maxVal);
+            playerHUD.SetChargeBar(currentVal, maxVal);
         }
 
         public void UpdateEnemyChargeBar(int currentVal, int maxVal)
         {
-            enemyHUD.SetChargeBar((float)currentVal / maxVal);
+            enemyHUD.SetChargeBar(currentVal, maxVal);
         }
 
         private void OnPlayerChooseAttack()
@@ -157,11 +157,11 @@ namespace CombatSystem
             switch (actionName)
             {
                 case ActionName.Attack:
-                    return "attack";
+                    return "攻击";
                 case ActionName.Defense:
-                    return "defend";
+                    return "防御";
                 case ActionName.Charge:
-                    return "charge";
+                    return "蓄能";
                 default:
                     return "";
             }
@@ -169,7 +169,7 @@ namespace CombatSystem
 
         public void ResetDialogueText()
         {
-            dialogueText.text = "Choose an action";
+            dialogueText.text = "选择下一步行动";
         }
 
         public void ShowDialogueMessage(string s)

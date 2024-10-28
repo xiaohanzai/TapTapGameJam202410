@@ -81,16 +81,16 @@ namespace CombatSystem
                 case BuffType.StartWithOneCharge:
                     _currentCharge = 1;
                     Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
-                    return "start with one charge.";
+                    return "起始蓄能为 1";
                 case BuffType.DamageIncreaseByCharge:
-                    return shortVersion ? "more charge, higher attack" : "more attack power with more charge, at the cost of losing all charge.";
+                    return shortVersion ? "蓄能越多攻击越高" : "蓄力越多攻击越高，但会消耗所有蓄能";
                 case BuffType.Shield:
                     _shield = _maxHealth / 3;
-                    return shortVersion ? "shield." : "can shield some damage taken.";
+                    return shortVersion ? "盾牌" : "在剩余1/3血量时开始抵挡一部分攻击";
                 case BuffType.TakeDamageOnCharge:
-                    return shortVersion ? "take damage on charge." : "can convert health damage to losing charge.";
+                    return shortVersion ? "用蓄能代替血量受攻击" : "如有多余的蓄能，用蓄能代替血量受攻击";
                 case BuffType.GainChargeFromDefense:
-                    return shortVersion ? "charge on defense." : "gain charge from defending, but cannot defend consecutively.";
+                    return shortVersion ? "防御时增加蓄能" : "防御时增加蓄能，但不能连续防御";
                 default:
                     return "no buff!";
             }

@@ -45,8 +45,8 @@ namespace CombatSystem
             lightAmount = light;
             newBuff = enemyBuff;
 
-            getLightButton.GetComponent<UIHoverRevealer>().SetHoverText("Get " + ((int)lightAmount).ToString() + " amount of light from defeating this enemy");
-            getBuffButton.GetComponent<UIHoverRevealer>().SetHoverText("<color=\"red\">Change from:</color>" + currentBuffDescription + "\n" + "<color=\"red\">To:</color>" + newBuffDescription);
+            getLightButton.GetComponent<UIHoverRevealer>().SetHoverText("从敌人处获得 " + ((int)lightAmount).ToString() + " 光亮值");
+            getBuffButton.GetComponent<UIHoverRevealer>().SetHoverText("<color=\"red\">当前技能:</color>" + currentBuffDescription + "\n" + "<color=\"red\">敌人技能:</color>" + newBuffDescription);
         }
     }
 }

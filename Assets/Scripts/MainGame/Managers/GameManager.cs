@@ -107,17 +107,15 @@ public class GameManager : MonoBehaviour
             combatSystemManager.ChangePlayerStats(hp - lightManager.GetDeltaLight(), 0);
             float playerLight = combatSystemManager.GetPlayerStats().Item1;
             lightManager.SetPayerCurrentLight(playerLight);
-            string s = "Fairy gave you " + hp.ToString() + " light back;\nYou now have " + ((int)playerLight).ToString() + "light";
             float t = 2f;
             //}
             if (lightManager.GetEnvironmentLight() > lightThreshold1)
             {
                 t = 6f;
-                s += "\nYour next enemy pattern (if enemy appears): " + combatSystemManager.GetNextEnemyDescription();
                 if (lightManager.GetEnvironmentLight() < lightThreshold2) isChargeMemLost = true;
                 else isChargeMemLost = false;
             }
-            uiManager.ShowFairyEncounterText(s, t);
+            uiManager.ShowFairyEncounterText(hp, playerLight, t > 3? combatSystemManager : null, isChargeMemLost, t);
         }
         fairySystemManager.Deactivate();
     }
@@ -133,6 +131,7 @@ public class GameManager : MonoBehaviour
         fac = Mathf.Max(1f - 0.1f * nDeaths, 0.6f);
         lightManager.SetUpParams(playerInitLight, environmentMaxLight);
         round = -1;
+        isChargeMemLost = true;
         OnEachRoundStarts();
     }
 

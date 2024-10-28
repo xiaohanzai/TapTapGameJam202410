@@ -85,13 +85,15 @@ public class UIManager : MonoBehaviour
 
     public void UpdateCountDownText(float t)
     {
-        if (t > 0) countDownTxt.text = Mathf.CeilToInt(t) + " sec left to share light";
+        if (t > 0) countDownTxt.text = "分享光亮的剩余时间：" + Mathf.CeilToInt(t);
         else countDownTxt.text = "";
     }
 
-    public void ShowFairyEncounterText(string s, float time)
+    public void ShowFairyEncounterText(int hp, float playerLight, CombatSystemManager combatSystemManager, bool isChargeMemLost, float time)
     {
-        fairyEncounterText.text = s;
+        fairyEncounterText.text = "小精灵给你 " + hp.ToString() + " 点光亮值\n你现在拥有 " + ((int)playerLight).ToString() + " 光亮值";
+        if (combatSystemManager != null) fairyEncounterText.text += "\n\n现在可预测下一个敌人的行为模式：" + combatSystemManager.GetNextEnemyDescription();
+        if (!isChargeMemLost) fairyEncounterText.text += "\n\n现在开始你不会失去上一次战斗时剩余的蓄力值";
         Invoke("DelayedResetFairyEncounterText", time);
     }
 

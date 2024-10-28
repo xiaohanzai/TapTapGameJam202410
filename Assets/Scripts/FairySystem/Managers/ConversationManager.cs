@@ -52,7 +52,7 @@ namespace FairySystem
 
         private void ShowNextSlide()
         {
-            image.sprite = fairyConversationDatas[ind].ConversationDatas[indSlide].image;
+            //image.sprite = fairyConversationDatas[ind].ConversationDatas[indSlide].image;
             textMeshPro.text = fairyConversationDatas[ind].ConversationDatas[indSlide].text;
             nextBtn.gameObject.SetActive(false);
             indSlide++;

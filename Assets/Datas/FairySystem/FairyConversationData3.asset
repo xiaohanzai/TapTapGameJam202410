@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _conversationDatas:
   - image: {fileID: 21300000, guid: ade6afd9cbd5c1740bf6046d9a18b97d, type: 3}
-    text: this is a test
+    text: "\u662F"
   - image: {fileID: 21300000, guid: d819d29c71518d340b52028b17af51c2, type: 3}
-    text: to see if the conversation system works
+    text: "\u4E2D"
   - image: {fileID: 21300000, guid: 4e7023cd378451d4d80b1c653bb62ff7, type: 3}
-    text: hhh
+    text: "\u6587"
   - image: {fileID: 21300000, guid: 163cdf30ffc80c34d918ea83ab5e762f, type: 3}
-    text: hhh
+    text: "\u7684"
   _minHP: 3
   _maxHP: 6

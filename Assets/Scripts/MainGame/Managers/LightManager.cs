@@ -5,15 +5,21 @@ using UnityEngine.UI;
 
 public class LightManager : MonoBehaviour
 {
-    private float playerLight;
-    private int playerMaxLight;
-    private int environmentLight;
-    private int environmentMaxLight;
+    [SerializeField] private float playerLight;
+    [SerializeField] private int playerMaxLight;
+    [SerializeField] private int environmentLight;
+    [SerializeField] private int environmentMaxLight;
 
     private int deltaLight;
 
-    [SerializeField] private Image forestImage;
+    [SerializeField] private Image backgroundImage;
     [SerializeField] private Image playerLightImage;
+
+    [SerializeField] private Sprite cloudBackground;
+    [SerializeField] private Sprite clearSkyBackground;
+
+    private Color gray = new Color(0.2f, 0.2f, 0.2f, 1);
+    private Color white = Color.white;
 
     public void SetUpParams(int playerInitLight, int envMaxLight)
     {
@@ -21,8 +27,9 @@ public class LightManager : MonoBehaviour
         playerLight = playerMaxLight;
         environmentMaxLight = envMaxLight;
         environmentLight = 0;
-        playerLightImage.color = Color.white;
-        forestImage.color = Color.black;
+        playerLightImage.color = white;
+        backgroundImage.color = gray;
+        backgroundImage.sprite = cloudBackground;
     }
 
     public bool CheckIfAuroraVisible(int round, int maxRounds)
@@ -31,7 +38,11 @@ public class LightManager : MonoBehaviour
 
         float p = Random.Range(0, 1f);
         float threshold = (float)round / maxRounds - (playerLight / playerMaxLight) * 0.1f;
-        if (p < threshold) return true;
+        if (p < threshold)
+        {
+            backgroundImage.sprite = clearSkyBackground;
+            return true;
+        }
         return false;
     }
 
@@ -42,8 +53,10 @@ public class LightManager : MonoBehaviour
             playerLight -= 1;
             environmentLight++;
             deltaLight++;
-            playerLightImage.color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, playerLight / playerMaxLight);
-            forestImage.color = Color.Lerp(Color.black, new Color(0, 0, 0, 0), (float)environmentLight / environmentMaxLight);
+            float t = (float)playerLight / playerMaxLight;
+            playerLightImage.color = Color.Lerp(Color.black, white, t);
+            t = (float)environmentLight / environmentMaxLight;
+            backgroundImage.color = Color.Lerp(gray, white, -(1f - t) * (1f - t) + 1f);
         }
     }
 
@@ -66,6 +79,8 @@ public class LightManager : MonoBehaviour
     public void SetPayerCurrentLight(float light)
     {
         playerLight = light;
+        float t = (float)playerLight / playerMaxLight;
+        playerLightImage.color = Color.Lerp(Color.black, white, t);
         deltaLight = 0;
     }
 

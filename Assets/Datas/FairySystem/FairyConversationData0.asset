@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _conversationDatas:
   - image: {fileID: 21300000, guid: 0f37bf3cf5680a64d863b5f155b2a597, type: 3}
-    text: this is a test
+    text: "\u4F60\u597D"
   - image: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
-    text: to see if the conversation system works
+    text: "\u4E16\u754C"
   - image: {fileID: 21300000, guid: 179bd38ab997c7440844309bc52e708a, type: 3}
-    text: hhh
+    text: "\u6709\u4E2D\u6587"
   _minHP: 0
   _maxHP: 5

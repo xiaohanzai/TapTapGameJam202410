@@ -239,15 +239,15 @@ namespace CombatSystem
             switch (_personalityType)
             {
                 case EnemyPersonalityType.MindlessCAD:
-                    return "actions loop over charge -> attack -> defend";
+                    return "循环 蓄力 -> 攻击 -> 防御";
                 case EnemyPersonalityType.MindlessCDA:
-                    return "actions loop over charge -> defend -> attack";
+                    return "循环 蓄力 -> 防御 -> 攻击";
                 case EnemyPersonalityType.Revenge:
-                    return "will attack in the next round if you attack";
+                    return "如果你进攻，下一轮进攻你";
                 case EnemyPersonalityType.PurelyRandom:
-                    return "actions are purely random";
+                    return "行动完全随机";
                 case EnemyPersonalityType.Boss:
-                    return "can't tell you";
+                    return "不能告诉你";
                 default:
                     return "";
             }
