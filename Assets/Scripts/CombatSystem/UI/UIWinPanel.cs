@@ -13,10 +13,10 @@ namespace CombatSystem
         [SerializeField] private Button doNothingButton;
 
         public UnityEvent Evt_BtnOnClickUniversal = new UnityEvent();
-        public UnityEvent<int> Evt_OnGetLightClicked = new UnityEvent<int>();
+        public UnityEvent<float> Evt_OnGetLightClicked = new UnityEvent<float>();
         public UnityEvent<BuffType> Evt_OnGetBuffClicked = new UnityEvent<BuffType>();
 
-        private int lightAmount;
+        private float lightAmount;
         private BuffType newBuff;
 
         // Start is called before the first frame update
@@ -40,13 +40,13 @@ namespace CombatSystem
             Evt_BtnOnClickUniversal.Invoke();
         }
 
-        public void SetUpWinPanel(int light, BuffType enemyBuff, string currentBuffDescription, string newBuffDescription)
+        public void SetUpWinPanel(float light, BuffType enemyBuff, string currentBuffDescription, string newBuffDescription)
         {
             lightAmount = light;
             newBuff = enemyBuff;
 
-            getLightButton.GetComponent<UIHoverRevealer>().SetHoverText("Get " + lightAmount.ToString() + " amount of light from defeating this enemy");
-            getBuffButton.GetComponent<UIHoverRevealer>().SetHoverText("<color=\"red\">Change from:</color>" + currentBuffDescription + "\n" + "<color=\"red\">To:</color>" + newBuffDescription);
+            getLightButton.GetComponent<UIHoverRevealer>().SetHoverText("从敌人处获得 " + ((int)lightAmount).ToString() + " 光亮值");
+            getBuffButton.GetComponent<UIHoverRevealer>().SetHoverText("<color=\"red\">当前技能:</color>" + currentBuffDescription + "\n" + "<color=\"red\">敌人技能:</color>" + newBuffDescription);
         }
     }
 }

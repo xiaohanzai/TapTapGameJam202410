@@ -20,7 +20,6 @@ namespace CombatSystem
 
             //Evt_OnCharacterDied.AddListener(() => { gameObject.SetActive(false); });
 
-            Evt_OnCharacterDied.AddListener(uiManager.ShowWinUI);
             Evt_OnChargeChanged.AddListener(uiManager.UpdateEnemyChargeBar);
             Evt_OnHealthChanged.AddListener(uiManager.UpdateEnemyHealthBar);
         }
@@ -29,11 +28,16 @@ namespace CombatSystem
         {
             base.SetUp();
 
+            _currentHealth = _maxHealth;
+            Evt_OnHealthChanged.Invoke(_currentHealth, _maxHealth);
+
+            _currentCharge = 0;
+            Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
+
             _ind = -1;
 
             if (_characterParamsData is EnemyParamsDataSO enemyParamsData)
             {
-                _lightAmount = enemyParamsData.LightAmount;
                 _personalityType = enemyParamsData.PersonalityType;
                 _buffType = enemyParamsData.BuffType;
             }
@@ -41,6 +45,18 @@ namespace CombatSystem
             {
                 Debug.LogError("Need to input EnemyParamsDataSO for enemies!");
             }
+        }
+
+        public void SetUp(float fac)
+        {
+            SetUp();
+
+            _attackPower *= fac;
+        }
+
+        public float GetLightAmount()
+        {
+            return _maxHealth;
         }
 
         public ActionName ChooseAction(ActionName playerActionName, CombatContext combatContext)
@@ -55,6 +71,8 @@ namespace CombatSystem
                     return ChooseActionMindlessCDA();
                 case EnemyPersonalityType.Revenge:
                     return ChooseActionMindlessRevenge(combatContext);
+                case EnemyPersonalityType.Boss:
+                    return ChooseActionBoss(playerActionName);
                 default:
                     return ChooseActionDefault(playerActionName, combatContext);
             }
@@ -188,6 +206,50 @@ namespace CombatSystem
                     else return ActionName.Charge;
                 default:
                     return ActionName.Charge;
+            }
+        }
+
+        private ActionName ChooseActionBoss(ActionName playerActionName)
+        {
+            _ind = (_ind + 1) % 2;
+            if (_ind == 0)
+            {
+                if (playerActionName == ActionName.Attack) return ActionName.Charge;
+                else if (playerActionName == ActionName.Defense)
+                {
+                    if (_currentCharge > 0) return ActionName.Attack;
+                    else return ActionName.Defense;
+                }
+                else return ActionName.Defense;
+            }
+            else
+            {
+                if (playerActionName == ActionName.Attack) return ActionName.Defense;
+                else if (playerActionName == ActionName.Defense) return ActionName.Charge;
+                else
+                {
+                    if (_currentCharge > 0) return ActionName.Attack;
+                    else return ActionName.Charge;
+                }
+            }
+        }
+
+        public string GetDescription()
+        {
+            switch (_personalityType)
+            {
+                case EnemyPersonalityType.MindlessCAD:
+                    return "循环 蓄力 -> 攻击 -> 防御";
+                case EnemyPersonalityType.MindlessCDA:
+                    return "循环 蓄力 -> 防御 -> 攻击";
+                case EnemyPersonalityType.Revenge:
+                    return "如果你进攻，下一轮进攻你";
+                case EnemyPersonalityType.PurelyRandom:
+                    return "行动完全随机";
+                case EnemyPersonalityType.Boss:
+                    return "不能告诉你";
+                default:
+                    return "";
             }
         }
     }

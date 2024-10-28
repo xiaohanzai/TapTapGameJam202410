@@ -23,6 +23,10 @@ namespace CombatSystem
         [SerializeField] private UIHoverRevealer playerBuffRevealer;
 
         [Header("Win Lose UI")]
+        [SerializeField] private GameObject bossWinPanel;
+        //[SerializeField] private Button bossWinButton;
+        [SerializeField] private GameObject fakeBossWinPanel;
+        [SerializeField] private Button fakeBossWinButton;
         [SerializeField] private UIWinPanel winPanel;
         public UIWinPanel WinPanel => winPanel;
         [SerializeField] private GameObject loseUI;
@@ -31,6 +35,9 @@ namespace CombatSystem
         [Header("Battle Start UI")]
         [SerializeField] private GameObject battleStartUI;
         [SerializeField] private Button battleStartButton;
+
+        [Header("Enemy Unseen UI")]
+        [SerializeField] private GameObject enemyUnseenUI;
 
         private CombatManager combatManager;
         private CommandManager commandManager;
@@ -47,6 +54,7 @@ namespace CombatSystem
             defenseButton.onClick.AddListener(OnPlayerChooseDefense);
 
             loseButton.onClick.AddListener(OnLosePanelBtnClicked);
+            fakeBossWinButton.onClick.AddListener(OnLosePanelBtnClicked);
 
             battleStartButton.onClick.AddListener(OnBattleStart);
 
@@ -55,7 +63,7 @@ namespace CombatSystem
             HideButtons();
             HideWinUI();
             HideLoseUI();
-            ShowBattleStartUI();
+            HideBattleStartUI();
         }
 
         private void OnBattleStart()
@@ -68,7 +76,7 @@ namespace CombatSystem
         public void DelayedOnBattleStart()
         {
             ShowButtons();
-            ShowDialogueMessage("Choose action");
+            ShowDialogueMessage("选择下一步行动");
         }
 
         public void QueueInDialogueTextCommand(string s, float waitTime)
@@ -99,24 +107,24 @@ namespace CombatSystem
             defenseButton.enabled = enabled;
         }
 
-        public void UpdatePlayerHealthBar(int currentVal, int maxVal)
+        public void UpdatePlayerHealthBar(float currentVal, int maxVal)
         {
-            playerHUD.SetHealthBar((float)currentVal / maxVal);
+            playerHUD.SetHealthBar(currentVal, maxVal);
         }
 
-        public void UpdateEnemyHealthBar(int currentVal, int maxVal)
+        public void UpdateEnemyHealthBar(float currentVal, int maxVal)
         {
-            enemyHUD.SetHealthBar((float)currentVal / maxVal);
+            enemyHUD.SetHealthBar(currentVal, maxVal);
         }
 
         public void UpdatePlayerChargeBar(int currentVal, int maxVal)
         {
-            playerHUD.SetChargeBar((float)currentVal / maxVal);
+            playerHUD.SetChargeBar(currentVal, maxVal);
         }
 
         public void UpdateEnemyChargeBar(int currentVal, int maxVal)
         {
-            enemyHUD.SetChargeBar((float)currentVal / maxVal);
+            enemyHUD.SetChargeBar(currentVal, maxVal);
         }
 
         private void OnPlayerChooseAttack()
@@ -149,11 +157,11 @@ namespace CombatSystem
             switch (actionName)
             {
                 case ActionName.Attack:
-                    return "attack";
+                    return "攻击";
                 case ActionName.Defense:
-                    return "defend";
+                    return "防御";
                 case ActionName.Charge:
-                    return "charge";
+                    return "蓄能";
                 default:
                     return "";
             }
@@ -161,7 +169,7 @@ namespace CombatSystem
 
         public void ResetDialogueText()
         {
-            dialogueText.text = "Choose an action";
+            dialogueText.text = "选择下一步行动";
         }
 
         public void ShowDialogueMessage(string s)
@@ -183,19 +191,21 @@ namespace CombatSystem
         private void HideWinUI()
         {
             winPanel.gameObject.SetActive(false);
+            bossWinPanel.SetActive(false);
+            fakeBossWinPanel.SetActive(false);
         }
 
         private void OnWinPanelBtnClicked()
         {
             ShowBattleStartUI();
-            combatManager.SetUpBattle();
+            combatManager.SetUpBattle(false, 1, false);
             HideWinUI();
         }
 
         private void OnLosePanelBtnClicked()
         {
             ShowBattleStartUI();
-            combatManager.SetUpBattle();
+            combatManager.SetUpBattle(false, 1, false);
             HideLoseUI();
         }
 
@@ -215,9 +225,13 @@ namespace CombatSystem
             loseUI.SetActive(false);
         }
 
-        private void ShowBattleStartUI()
+        public void ShowBattleStartUI()
         {
+            HideButtons();
+            HideWinUI();
+            HideLoseUI();
             battleStartUI.SetActive(true);
+            enemyUnseenUI.SetActive(false);
         }
 
         private void HideBattleStartUI()
@@ -228,6 +242,28 @@ namespace CombatSystem
         public void SetUpPlayerBuffText(string s)
         {
             playerBuffRevealer.SetHoverText(s);
+        }
+
+        public void ShowEnemyUnseenUI()
+        {
+            enemyUnseenUI.SetActive(true);
+        }
+
+        public void HideEnemyUnseenUI()
+        {
+            enemyUnseenUI.SetActive(false);
+        }
+
+        public void ShowBossWinUI()
+        {
+            bossWinPanel.gameObject.SetActive(true);
+            HideButtons();
+        }
+
+        public void ShowFakeBossWinUI()
+        {
+            fakeBossWinPanel.gameObject.SetActive(true);
+            HideButtons();
         }
     }
 }

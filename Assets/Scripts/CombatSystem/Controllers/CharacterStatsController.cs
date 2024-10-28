@@ -12,23 +12,23 @@ namespace CombatSystem
         [SerializeField] protected Animator _animator;
 
         public UnityEvent<int, int> Evt_OnChargeChanged = new UnityEvent<int, int>();
-        public UnityEvent<int, int> Evt_OnHealthChanged = new UnityEvent<int, int>();
+        public UnityEvent<float, int> Evt_OnHealthChanged = new UnityEvent<float, int>();
         public UnityEvent<bool> Evt_OnDefended = new UnityEvent<bool>();
         public UnityEvent Evt_OnCharacterDied = new UnityEvent();
 
-        protected int _currentHealth;
+        protected float _currentHealth;
         protected int _maxHealth;
 
         protected int _currentCharge;
         protected int _maxCharge;
         protected int _thisRoundChargeLoss;
 
-        protected int _attackPower;
-        protected int _thisRoundAttackPower;
+        protected float _attackPower;
+        protected float _thisRoundAttackPower;
 
-        [SerializeField] protected int _lightAmount;
+        protected float _lightAmount;
 
-        private int _shield;
+        private float _shield;
 
         protected float _attackAnimationDuration;
         public float AttackAnimationDuration => _attackAnimationDuration;
@@ -52,12 +52,9 @@ namespace CombatSystem
         public virtual void SetUp()
         {
             _maxHealth = _characterParamsData.MaxHealth;
-            _currentHealth = _maxHealth;
-            Evt_OnHealthChanged.Invoke(_currentHealth, _maxHealth);
 
             _maxCharge = _characterParamsData.MaxCharge;
-            _currentCharge = 0;
-            Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
+            
             _thisRoundChargeLoss = 0;
 
             _attackPower = _characterParamsData.AttackPower;
@@ -84,16 +81,16 @@ namespace CombatSystem
                 case BuffType.StartWithOneCharge:
                     _currentCharge = 1;
                     Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
-                    return "start with one charge.";
+                    return "起始蓄能为 1";
                 case BuffType.DamageIncreaseByCharge:
-                    return shortVersion ? "more charge, higher attack" : "more attack power with more charge, at the cost of losing all charge.";
+                    return shortVersion ? "蓄能越多攻击越高" : "蓄力越多攻击越高，但会消耗所有蓄能";
                 case BuffType.Shield:
                     _shield = _maxHealth / 3;
-                    return shortVersion ? "shield." : "can shield some damage taken.";
+                    return shortVersion ? "盾牌" : "在剩余1/3血量时开始抵挡一部分攻击";
                 case BuffType.TakeDamageOnCharge:
-                    return shortVersion ? "take damage on charge." : "can convert health damage to losing charge.";
+                    return shortVersion ? "用蓄能代替血量受攻击" : "如有多余的蓄能，用蓄能代替血量受攻击";
                 case BuffType.GainChargeFromDefense:
-                    return shortVersion ? "charge on defense." : "gain charge from defending, but cannot defend consecutively.";
+                    return shortVersion ? "防御时增加蓄能" : "防御时增加蓄能，但不能连续防御";
                 default:
                     return "no buff!";
             }
@@ -148,13 +145,13 @@ namespace CombatSystem
             commandManager.AddCommand(new StatsResetCommand(this));
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
             if (_isDefending) return;
 
             if (_buffType == BuffType.TakeDamageOnCharge && _currentCharge > _thisRoundChargeLoss)
             {
-                int damageOnCharge = Mathf.Min(damage, _currentCharge - _thisRoundChargeLoss);
+                int damageOnCharge = Mathf.Min(Mathf.CeilToInt(damage), _currentCharge - _thisRoundChargeLoss);
                 _currentCharge -= damageOnCharge;
                 damage -= damageOnCharge;
             }
@@ -186,15 +183,8 @@ namespace CombatSystem
         {
             _isDefending = false;
             _thisRoundChargeLoss = 0;
-            if (_buffType == BuffType.GainChargeFromDefense && _indFromDefense >= 0)
-            {
-                if (_indFromDefense == 1)
-                {
-                    Evt_OnDefended.Invoke(true);
-                    _indFromDefense = -1;
-                }
-                else _indFromDefense++;
-            }
+            Evt_OnDefended.Invoke(true);
+            _indFromDefense = -1;
         }
 
         public void Charge()
@@ -211,7 +201,7 @@ namespace CombatSystem
             }
         }
 
-        public int GetAttackPower()
+        public float GetAttackPower()
         {
             return _thisRoundAttackPower;
         }
@@ -221,21 +211,6 @@ namespace CombatSystem
             Evt_OnChargeChanged.Invoke(_currentCharge, _maxCharge);
             Evt_OnHealthChanged.Invoke(Mathf.Max(_currentHealth, 0), _maxHealth);
             if (_currentHealth <= 0) Evt_OnCharacterDied.Invoke();
-        }
-
-        public void AddLight(int amount)
-        {
-            _lightAmount += amount;
-        }
-
-        public void LoseLight(int amount)
-        {
-            _lightAmount -= amount;
-        }
-
-        public int GetLightAmount()
-        {
-            return _lightAmount;
         }
 
         public void SetBuffType(BuffType buffType)

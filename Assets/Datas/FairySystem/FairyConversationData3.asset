@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e7460cfc474b46a78300d10b0de8e06, type: 3}
+  m_Name: FairyConversationData3
+  m_EditorClassIdentifier: 
+  _conversationDatas:
+  - image: {fileID: 21300000, guid: ade6afd9cbd5c1740bf6046d9a18b97d, type: 3}
+    text: "\u662F"
+  - image: {fileID: 21300000, guid: d819d29c71518d340b52028b17af51c2, type: 3}
+    text: "\u4E2D"
+  - image: {fileID: 21300000, guid: 4e7023cd378451d4d80b1c653bb62ff7, type: 3}
+    text: "\u6587"
+  - image: {fileID: 21300000, guid: 163cdf30ffc80c34d918ea83ab5e762f, type: 3}
+    text: "\u7684"
+  _minHP: 3
+  _maxHP: 6

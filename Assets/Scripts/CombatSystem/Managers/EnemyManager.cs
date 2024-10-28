@@ -17,15 +17,21 @@ namespace CombatSystem
         {
             uiManager = ServiceLocator.Get<UIManager>();
 
-            foreach (var item in enemyStatsControllers)
+            for (int i = 0; i < enemyStatsControllers.Length; i++)
             {
-                item.Evt_OnCharacterDied.AddListener(OnCurrentEnemyDied);
+                if (i < enemyStatsControllers.Length - 2)
+                {
+                    enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(uiManager.ShowWinUI);
+                    enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(OnCurrentEnemyDied);
+                }
+                else if (i == enemyStatsControllers.Length - 2) enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(uiManager.ShowFakeBossWinUI);
+                else enemyStatsControllers[i].Evt_OnCharacterDied.AddListener(uiManager.ShowBossWinUI);
             }
         }
 
         private void OnCurrentEnemyDied()
         {
-            ind++;
+            ind = (ind + 1) % (enemyStatsControllers.Length - 1);
         }
 
         public EnemyStatsController GetAndShowCurrentEnemy()
@@ -36,6 +42,12 @@ namespace CombatSystem
                 else enemyStatsControllers[i].gameObject.SetActive(false);
             }
             return ind < enemyStatsControllers.Length? enemyStatsControllers[ind] : null;
+        }
+
+        public void SetEnemy(int i)
+        {
+            ind = i % (enemyStatsControllers.Length - 2);
+            if (i < 0) ind = enemyStatsControllers.Length + i;
         }
     }
 }
