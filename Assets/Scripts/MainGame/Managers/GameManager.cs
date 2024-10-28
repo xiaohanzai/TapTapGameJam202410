@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerStatsManager playerStatsManager;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private LightManager lightManager;
+    [SerializeField] private BGMManager bgmManager;
 
     [SerializeField] private float timeLimitToShareLight = 5f;
 
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         round++;
         fairySystemManager.Deactivate();
         combatSystemManager.Deactivate();
+        bgmManager.PlayMainGameBGM();
         StartCoroutine(Co_OnEachRoundStarts());
     }
 
@@ -77,12 +79,14 @@ public class GameManager : MonoBehaviour
     {
         if (ind == 0)
         {
+            bgmManager.PlayFairyBGM();
             fairySystemManager.Activate();
             if (lightManager.IsFairySeeable(round)) fairySystemManager.ShowFairy(round);
             else fairySystemManager.ShowFairyUnseenUI();
         }
         else
         {
+            bgmManager.PlayBattleBGM();
             combatSystemManager.Activate();
             if (lightManager.IsEnemySeeable(round)) combatSystemManager.StartCombat(round, fac, isChargeMemLost);
             else combatSystemManager.ShowEnemyUnseenUI();
